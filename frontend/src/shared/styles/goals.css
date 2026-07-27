@@ -1,0 +1,287 @@
+/* ==========================================================================
+   Goals Styles
+   ========================================================================== */
+
+.goals-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+}
+
+/* ── Goals Header ─────────────────────────────────────────────────────────── */
+.goals-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-6);
+}
+
+.goals-title {
+  font-size: var(--text-3xl);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+/* ── Goals Form ───────────────────────────────────────────────────────────── */
+.goals-form {
+  margin-bottom: var(--space-6);
+}
+
+.goals-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+}
+
+/* ── Goals Sections ───────────────────────────────────────────────────────── */
+.goals-section {
+  margin-bottom: var(--space-8);
+}
+
+.goals-section-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-xl);
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+  margin-bottom: var(--space-2);
+}
+
+.goals-section-description {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  margin-bottom: var(--space-4);
+}
+
+/* ── Goals Grid ───────────────────────────────────────────────────────────── */
+.goals-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-4);
+}
+
+/* ── Goal Card ────────────────────────────────────────────────────────────── */
+.goal-card {
+  background: var(--surface-card);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-xl);
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  transition: all var(--transition-fast);
+}
+
+.goal-card:hover {
+  border-color: var(--border-hover);
+  box-shadow: var(--shadow-md);
+}
+
+.goal-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.goal-card-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.goal-card-badge {
+  font-size: var(--text-xs);
+  font-weight: var(--font-medium);
+  padding: 0.125rem 0.5rem;
+  border-radius: var(--radius-full);
+}
+
+.goal-card-badge.auto {
+  background: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+}
+
+.goal-card-actions {
+  display: flex;
+  gap: var(--space-1);
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.goal-card:hover .goal-card-actions {
+  opacity: 1;
+}
+
+.goal-card-name {
+  font-size: var(--text-base);
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+  word-break: break-word;
+}
+
+/* ── Goal Progress ────────────────────────────────────────────────────────── */
+.goal-card-progress {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.goal-progress-bar {
+  height: 0.5rem;
+  background: var(--border-default);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.goal-progress-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  transition: width var(--transition-normal);
+}
+
+.goal-progress-text {
+  display: flex;
+  align-items: baseline;
+  gap: 0.25rem;
+}
+
+.goal-progress-current {
+  font-size: var(--text-lg);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+}
+
+.goal-progress-separator {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+
+.goal-progress-target {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+
+.goal-card-percentage {
+  font-size: var(--text-2xl);
+  font-weight: var(--font-bold);
+  text-align: right;
+}
+
+/* ── Goal Controls ────────────────────────────────────────────────────────── */
+.goal-card-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+}
+
+.goal-control-btn {
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-default);
+  background: var(--surface-card);
+  color: var(--text-primary);
+  font-size: var(--text-lg);
+  font-weight: var(--font-bold);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+}
+
+.goal-control-btn:hover:not(:disabled) {
+  background: var(--surface-card-hover);
+  border-color: var(--border-hover);
+}
+
+.goal-control-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.goal-reset-btn {
+  width: 100%;
+  padding: var(--space-2);
+  background: transparent;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.goal-reset-btn:hover {
+  background: var(--surface-card-hover);
+  color: var(--text-primary);
+}
+
+/* ── Goals Empty ──────────────────────────────────────────────────────────── */
+.goals-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-12) var(--space-6);
+  text-align: center;
+  background: var(--surface-card);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-xl);
+}
+
+.goals-empty-icon {
+  width: 4rem;
+  height: 4rem;
+  margin-bottom: var(--space-4);
+  color: var(--text-muted);
+}
+
+.goals-empty-title {
+  font-size: var(--text-lg);
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+  margin-bottom: var(--space-2);
+}
+
+.goals-empty-description {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  max-width: 20rem;
+}
+
+/* ── Icon Picker ──────────────────────────────────────────────────────────── */
+.goals-icon-picker {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.goals-icon-option {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--radius-lg);
+  border: 2px solid transparent;
+  background: var(--surface-card);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+}
+
+.goals-icon-option:hover {
+  background: var(--surface-card-hover);
+}
+
+.goals-icon-option.selected {
+  border-color: currentColor;
+  background: var(--surface-card-hover);
+}

@@ -1,0 +1,13 @@
+@import './shared/styles/variables.css';
+@import './shared/styles/globals.css';
+@import './shared/styles/components.css';
+@import './shared/styles/auth.css';
+@import './shared/styles/tasks.css';
+@import './shared/styles/projects.css';
+@import './shared/styles/board.css';
+@import './shared/styles/calendar.css';
+@import './shared/styles/goals.css';
+@import './shared/styles/reports.css';
+@import './shared/styles/tags.css';
+@import './shared/styles/settings.css';
+@import './shared/styles/dashboard.css';

@@ -1,0 +1,387 @@
+/* ==========================================================================
+   Project Styles - Task Manager
+   ========================================================================== */
+
+/* ── Projects Page ────────────────────────────────────────────────────────── */
+.projects-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+}
+
+.projects-error {
+  text-align: center;
+  padding: var(--space-8);
+  color: var(--error-500);
+}
+
+/* ── Projects Header ──────────────────────────────────────────────────────── */
+.projects-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-6);
+}
+
+.projects-title {
+  font-size: var(--text-3xl);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+/* ── Filters ──────────────────────────────────────────────────────────────── */
+.projects-filters {
+  display: flex;
+  gap: var(--space-2);
+  margin-bottom: var(--space-6);
+}
+
+.filter-btn {
+  padding: var(--space-2) var(--space-4);
+  background: var(--surface-card);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.filter-btn:hover {
+  background: var(--surface-card-hover);
+  color: var(--text-primary);
+}
+
+.filter-btn.active {
+  background: var(--brand-500);
+  color: white;
+  border-color: var(--brand-500);
+}
+
+/* ── Projects Grid ────────────────────────────────────────────────────────── */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--space-4);
+}
+
+/* ── Project Card ─────────────────────────────────────────────────────────── */
+.project-card {
+  background: var(--surface-card);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-xl);
+  padding: var(--space-5);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.project-card:hover {
+  background: var(--surface-card-hover);
+  border-color: var(--border-hover);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.project-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.project-card-color {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--radius-lg);
+  flex-shrink: 0;
+}
+
+.project-card-actions {
+  display: flex;
+  gap: var(--space-1);
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.project-card:hover .project-card-actions {
+  opacity: 1;
+}
+
+.project-card-name {
+  font-size: var(--text-lg);
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+  word-break: break-word;
+}
+
+.project-card-description {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  line-clamp: 2;
+  word-break: break-word;
+}
+
+.project-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+}
+
+.project-status-badge {
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
+  color: white;
+  font-size: var(--text-xs);
+  font-weight: var(--font-medium);
+  text-transform: capitalize;
+}
+
+.project-card-date {
+  font-size: var(--text-xs);
+  color: var(--text-disabled);
+}
+
+.project-card-link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--text-sm);
+  color: var(--brand-500);
+  font-weight: var(--font-medium);
+}
+
+/* ── Empty State ──────────────────────────────────────────────────────────── */
+.projects-empty {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-12) var(--space-6);
+  text-align: center;
+  background: var(--surface-card);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-xl);
+}
+
+.projects-empty-icon {
+  width: 4rem;
+  height: 4rem;
+  margin-bottom: var(--space-4);
+  color: var(--text-muted);
+}
+
+.projects-empty-title {
+  font-size: var(--text-lg);
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+  margin-bottom: var(--space-2);
+}
+
+.projects-empty-description {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  max-width: 20rem;
+}
+
+/* ── Project Form ─────────────────────────────────────────────────────────── */
+.project-form {
+  margin-bottom: var(--space-6);
+}
+
+.project-form-card {
+  background: var(--surface-card);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+}
+
+.project-form-header {
+  padding: var(--space-4) var(--space-6);
+  border-bottom: 1px solid var(--border-default);
+}
+
+.project-form-title {
+  font-size: var(--text-lg);
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+}
+
+.project-form-content {
+  padding: var(--space-6);
+}
+
+/* ── Color Picker ─────────────────────────────────────────────────────────── */
+.color-picker {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.color-option {
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--radius-full);
+  border: 3px solid transparent;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.color-option:hover {
+  transform: scale(1.1);
+}
+
+.color-option.selected {
+  border-color: var(--text-primary);
+  box-shadow: 0 0 0 2px var(--surface-card);
+}
+
+/* ── Project Detail ───────────────────────────────────────────────────────── */
+.project-detail-header {
+  margin-bottom: var(--space-4);
+}
+
+.project-detail-info {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+.project-detail-color {
+  width: 3rem;
+  height: 3rem;
+  border-radius: var(--radius-lg);
+  flex-shrink: 0;
+}
+
+.project-detail-text {
+  flex: 1;
+}
+
+.project-detail-name {
+  font-size: var(--text-3xl);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-2);
+}
+
+.project-detail-description {
+  font-size: var(--text-base);
+  color: var(--text-muted);
+  margin-bottom: var(--space-2);
+}
+
+.project-detail-date {
+  font-size: var(--text-sm);
+  color: var(--text-disabled);
+}
+
+/* ── Status Selector ──────────────────────────────────────────────────────── */
+.project-detail-status {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
+}
+
+.project-detail-status-label {
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--text-primary);
+}
+
+.project-detail-status-buttons {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.status-btn {
+  padding: var(--space-2) var(--space-4);
+  background: var(--surface-card);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.status-btn:hover {
+  background: var(--surface-card-hover);
+  color: var(--text-primary);
+}
+
+.status-btn.active {
+  background: var(--brand-500);
+  color: white;
+  border-color: var(--brand-500);
+}
+
+/* ── Progress Bar ─────────────────────────────────────────────────────────── */
+.project-detail-progress {
+  margin-bottom: var(--space-6);
+  background: var(--surface-card);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-xl);
+  padding: var(--space-4) var(--space-6);
+}
+
+.progress-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-3);
+}
+
+.progress-label {
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--text-primary);
+}
+
+.progress-count {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+
+.progress-bar {
+  height: 0.5rem;
+  background: var(--border-default);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--brand-500);
+  border-radius: var(--radius-full);
+  transition: width var(--transition-base);
+}
+
+/* ── Project Tasks ────────────────────────────────────────────────────────── */
+.project-detail-tasks {
+  margin-top: var(--space-6);
+}
+
+.project-tasks-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-4);
+}
+
+.project-tasks-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-xl);
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+}

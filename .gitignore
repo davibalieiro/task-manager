@@ -1,0 +1,72 @@
+# ==================== Dependencies ====================
+node_modules/
+.pnp
+.pnp.js
+
+# ==================== Build Output ====================
+dist/
+build/
+.next/
+out/
+
+# ==================== Environment Variables ====================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# ==================== Logs ====================
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+firebase-debug.log*
+firebase-debug.*.log*
+
+# ==================== Testing ====================
+coverage/
+.nyc_output/
+
+# ==================== IDE / Editor ====================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# ==================== OS ====================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# ==================== Firebase ====================
+.firebase/
+*.functions-debug.log
+.dataconnect/
+extensions/
+
+# ==================== Misc ====================
+*.tgz
+.yarn-integrity
+.npm
+.eslintcache
+.node_repl_history
+.grunt
+.bower_components
+bower_components
+.lock-wscript
+build/Release
+lib-cov
+pids/
+*.pid
+*.seed
+*.pid.lock
