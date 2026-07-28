@@ -1,7 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { tagsApi } from '../api/tags'
 import type { CreateTagInput, UpdateTagInput } from '../types/tag'
-import { getSessionCookie } from '@/shared/infrastructure/config/auth'
 
 export function useTags() {
   return useQuery({
@@ -13,17 +12,7 @@ export function useTags() {
 export function useTaskTags() {
   return useQuery({
     queryKey: ['taskTags'],
-    queryFn: async (): Promise<Record<string, string[]>> => {
-      const token = getSessionCookie()
-      const res = await fetch('/api/listTaskTags', {
-        headers: {
-          'Content-Type': 'application/json',
-          ...(token && { Authorization: `Bearer ${token}` }),
-        },
-      })
-      if (!res.ok) throw new Error('Erro ao buscar etiquetas das tarefas')
-      return res.json()
-    },
+    queryFn: tagsApi.getAllTaskTags,
   })
 }
 

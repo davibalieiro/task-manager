@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Sidebar } from '@/features/dashboard/components/Sidebar'
 import { Menu, X } from 'lucide-react'
 
@@ -10,6 +10,8 @@ export function AppLayout({ children }: AppLayoutProps) {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
 
+  const closeMobile = useCallback(() => setMobileOpen(false), [])
+
   useEffect(() => {
     if (mobileOpen) {
       document.body.style.overflow = 'hidden'
@@ -18,6 +20,16 @@ export function AppLayout({ children }: AppLayoutProps) {
     }
     return () => { document.body.style.overflow = '' }
   }, [mobileOpen])
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 768) {
+        setMobileOpen(false)
+      }
+    }
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   return (
     <div className="dashboard-layout">
@@ -29,14 +41,16 @@ export function AppLayout({ children }: AppLayoutProps) {
         {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
       </button>
 
-      {mobileOpen && (
-        <div className="mobile-overlay" onClick={() => setMobileOpen(false)} />
-      )}
+      <div
+        className={`mobile-overlay ${mobileOpen ? 'active' : ''}`}
+        onClick={closeMobile}
+      />
 
       <div className={`sidebar-wrapper ${mobileOpen ? 'sidebar-mobile-open' : ''}`}>
         <Sidebar
           collapsed={sidebarCollapsed}
           onToggle={() => setSidebarCollapsed(!sidebarCollapsed)}
+          onNavigate={closeMobile}
         />
       </div>
 

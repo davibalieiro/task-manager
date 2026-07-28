@@ -235,16 +235,17 @@ export function TaskList() {
         onConfirm={confirmDelete}
         onCancel={() => setTaskToDelete(null)}
       />
-      <div className="tasks-header">
-        <h1 className="tasks-title">Minhas Tarefas</h1>
-        <button
-          className="btn btn-primary"
-          onClick={() => { setShowForm(true); setEditingTask(null); setEditingSubtasks([]); createForm.reset(); }}
-        >
-          <Plus className="h-4 w-4" />
-          Nova Tarefa
-        </button>
-      </div>
+      <div className="tasks-page">
+        <div className="tasks-header">
+          <h1 className="tasks-title">Minhas Tarefas</h1>
+          <button
+            className="btn btn-primary"
+            onClick={() => { setShowForm(true); setEditingTask(null); setEditingSubtasks([]); createForm.reset(); }}
+          >
+            <Plus className="h-4 w-4" />
+            Nova Tarefa
+          </button>
+        </div>
 
       <div className="tasks-filters">
         <div className="tasks-search">
@@ -330,7 +331,7 @@ export function TaskList() {
                     {...(editingTask ? updateForm.register('description') : createForm.register('description'))}
                   />
                 </div>
-                <div className="task-form-row" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 'var(--space-4)' }}>
+                <div className="task-form-row">
                   <div className="form-group">
                     <label className="form-label" htmlFor="dueDate">Data de vencimento</label>
                     <input
@@ -516,6 +517,7 @@ export function TaskList() {
         )}
       </div>
       <TaskSlideOver task={selectedTask} onClose={() => setSelectedTask(null)} />
+      </div>
     </AppLayout>
   )
 }

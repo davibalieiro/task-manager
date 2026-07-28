@@ -25,4 +25,5 @@ export const tagsApi = {
   }),
   getForTask: (taskId: string) => apiRequest<string[]>(`/listTaskTags?taskId=${taskId}`),
   getTasksForTag: (tagId: string) => apiRequest<Record<string, string[]>>(`/listTaskTags?tagId=${tagId}`),
+  getAllTaskTags: () => apiRequest<Record<string, string[]>>('/listTaskTags'),
 }

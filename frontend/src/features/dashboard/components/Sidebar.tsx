@@ -22,6 +22,7 @@ import {
 interface SidebarProps {
   collapsed: boolean
   onToggle: () => void
+  onNavigate?: () => void
 }
 
 const mainNav = [
@@ -39,7 +40,7 @@ const toolsNav = [
   { to: '/tags', icon: Tags, label: 'Etiquetas' },
 ]
 
-export function Sidebar({ collapsed, onToggle }: SidebarProps) {
+export function Sidebar({ collapsed, onToggle, onNavigate }: SidebarProps) {
   const navigate = useNavigate()
   const { user } = useAuthContext()
 
@@ -54,6 +55,10 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
 
   const userName = user?.displayName || user?.email?.split('@')[0] || 'Usuário'
   const userInitial = userName.charAt(0).toUpperCase()
+
+  const handleLinkClick = () => {
+    onNavigate?.()
+  }
 
   return (
     <aside className={`sidebar ${collapsed ? 'sidebar-collapsed' : ''}`} role="navigation" aria-label="Menu principal">
@@ -77,6 +82,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
               className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}
               title={collapsed ? item.label : undefined}
               aria-label={item.label}
+              onClick={handleLinkClick}
             >
               <item.icon className="sidebar-link-icon" />
               {!collapsed && <span className="sidebar-link-label">{item.label}</span>}
@@ -94,6 +100,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
               className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}
               title={collapsed ? item.label : undefined}
               aria-label={item.label}
+              onClick={handleLinkClick}
             >
               <item.icon className="sidebar-link-icon" />
               {!collapsed && <span className="sidebar-link-label">{item.label}</span>}
@@ -119,6 +126,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
             className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}
             title={collapsed ? 'Configurações' : undefined}
             aria-label="Configurações"
+            onClick={handleLinkClick}
           >
             <Settings className="sidebar-link-icon" />
             {!collapsed && <span className="sidebar-link-label">Configurações</span>}

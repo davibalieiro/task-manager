@@ -28,7 +28,7 @@ const TAG_COLORS = [
 ]
 
 const tagSchema = z.object({
-  name: z.string().min(1, 'Nome é obrigatório').max(30),
+  name: z.string().min(1, 'Nome é obrigatório').max(50),
   color: z.string(),
 })
 

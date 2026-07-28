@@ -219,3 +219,74 @@
   font-weight: var(--font-medium);
   color: var(--text-primary);
 }
+
+/* ── Responsive ───────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .settings-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-3);
+  }
+
+  .settings-title {
+    font-size: var(--text-2xl);
+  }
+
+  .settings-grid {
+    max-width: 100%;
+    gap: var(--space-6);
+  }
+
+  .settings-card {
+    padding: var(--space-4);
+  }
+
+  .settings-profile {
+    flex-direction: column;
+    text-align: center;
+    gap: var(--space-3);
+  }
+
+  .settings-profile-info {
+    align-items: center;
+  }
+
+  .settings-field-row {
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .settings-theme-options {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .settings-about-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-1);
+  }
+}
+
+@media (max-width: 480px) {
+  .settings-title {
+    font-size: var(--text-xl);
+  }
+
+  .settings-card {
+    padding: var(--space-3);
+    border-radius: var(--radius-lg);
+  }
+
+  .settings-avatar {
+    width: 3rem;
+    height: 3rem;
+  }
+
+  .settings-theme-options {
+    grid-template-columns: 1fr;
+  }
+
+  .settings-theme-btn {
+    padding: var(--space-3);
+  }
+}

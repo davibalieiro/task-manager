@@ -385,3 +385,141 @@
   font-weight: var(--font-semibold);
   color: var(--text-primary);
 }
+
+/* ── Responsive ───────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .projects-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-3);
+  }
+
+  .projects-title {
+    font-size: var(--text-2xl);
+  }
+
+  .projects-filters {
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .filter-btn {
+    font-size: var(--text-xs);
+    padding: var(--space-1) var(--space-3);
+  }
+
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .project-card {
+    padding: var(--space-4);
+  }
+
+  .project-card-name {
+    font-size: var(--text-base);
+  }
+
+  .project-card-description {
+    font-size: var(--text-xs);
+  }
+
+  .project-form-content {
+    padding: var(--space-4);
+  }
+
+  .project-form-header {
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .color-picker {
+    gap: var(--space-1);
+  }
+
+  .color-option {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+
+  .project-detail-info {
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .project-detail-name {
+    font-size: var(--text-2xl);
+  }
+
+  .project-detail-status {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2);
+  }
+
+  .project-detail-status-buttons {
+    flex-wrap: wrap;
+    gap: var(--space-1);
+  }
+
+  .status-btn {
+    font-size: var(--text-xs);
+    padding: var(--space-1) var(--space-3);
+  }
+
+  .project-detail-progress {
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .project-tasks-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2);
+  }
+
+  .task-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2);
+    padding: var(--space-3);
+  }
+
+  .task-actions {
+    width: 100%;
+    justify-content: flex-end;
+    border-top: 1px solid var(--border-default);
+    padding-top: var(--space-2);
+  }
+}
+
+@media (max-width: 480px) {
+  .projects-title {
+    font-size: var(--text-xl);
+  }
+
+  .projects-grid {
+    gap: var(--space-3);
+  }
+
+  .project-card {
+    padding: var(--space-3);
+  }
+
+  .project-card-color {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .project-card-name {
+    font-size: var(--text-sm);
+  }
+
+  .project-detail-name {
+    font-size: var(--text-xl);
+  }
+
+  .progress-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-1);
+  }
+}
