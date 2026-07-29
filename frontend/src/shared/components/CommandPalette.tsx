@@ -13,12 +13,12 @@ const NAV_ITEMS = [
   { label: 'Dashboard', path: '/', icon: BarChart3 },
   { label: 'Tarefas', path: '/tasks', icon: CheckCircle2 },
   { label: 'Board', path: '/board', icon: Clock },
-  { label: 'Calendario', path: '/calendar', icon: Calendar },
-  { label: 'Habitos', path: '/habits', icon: Flame },
+  { label: 'Calendário', path: '/calendar', icon: Calendar },
+  { label: 'Hábitos', path: '/habits', icon: Flame },
   { label: 'Metas', path: '/goals', icon: Target },
   { label: 'Projetos', path: '/projects', icon: Target },
-  { label: 'Relatorios', path: '/reports', icon: BarChart3 },
-  { label: 'Configuracoes', path: '/settings', icon: Settings },
+  { label: 'Relatórios', path: '/reports', icon: BarChart3 },
+  { label: 'Configurações', path: '/settings', icon: Settings },
 ]
 
 export function CommandPalette({ open, onClose }: CommandPaletteProps) {
@@ -76,14 +76,14 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
   }
 
   return (
-    <div className="command-palette-overlay" onClick={onClose} role="dialog" aria-modal="true" aria-label="Buscar paginas e tarefas">
+    <div className="command-palette-overlay" onClick={onClose} role="dialog" aria-modal="true" aria-label="Buscar páginas e tarefas">
       <div className="command-palette" onClick={(e) => e.stopPropagation()}>
         <div className="command-palette-input-wrapper" role="combobox" aria-expanded="true" aria-haspopup="listbox">
           <Search className="command-palette-search-icon" />
           <input
             ref={inputRef}
             className="command-palette-input"
-            placeholder="Buscar paginas, tarefas..."
+            placeholder="Buscar páginas, tarefas..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             aria-label="Buscar"
@@ -96,7 +96,7 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
         <div className="command-palette-results" role="listbox">
           {filteredNav.length > 0 && (
             <div className="command-palette-group">
-              <span className="command-palette-group-label">Paginas</span>
+              <span className="command-palette-group-label">Páginas</span>
               {filteredNav.map((item) => (
                 <button
                   key={item.path}
@@ -130,7 +130,7 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
                   />
                   <span>{task.title}</span>
                   <span className="command-palette-task-status">
-                    {task.completed ? 'Concluido' : task.status === 'in_progress' ? 'Em andamento' : 'A fazer'}
+                    {task.completed ? 'Concluído' : task.status === 'in_progress' ? 'Em andamento' : 'A fazer'}
                   </span>
                 </button>
               ))}

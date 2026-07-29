@@ -8,7 +8,7 @@ import { sendPasswordResetEmail } from 'firebase/auth'
 import { firebaseAuth } from '@/shared/infrastructure/config/auth'
 
 const forgotPasswordSchema = z.object({
-  email: z.string().email('Email invalido'),
+  email: z.string().email('Email inválido'),
 })
 
 type ForgotPasswordFormData = z.infer<typeof forgotPasswordSchema>
@@ -48,18 +48,18 @@ export function ForgotPassword() {
             <span className="auth-hero-logo-text">TaskManager</span>
           </div>
           <h2 className="auth-hero-title">
-            Seguranca da sua conta
+            Segurança da sua conta
           </h2>
           <p className="auth-hero-description">
             Manter sua conta segura e essencial. Vamos ajudar
-            voce a recuperar o acesso rapidamente.
+            você a recuperar o acesso rapidamente.
           </p>
           <div className="auth-hero-features">
             <div className="auth-hero-feature">
               <div className="auth-hero-feature-icon">
                 <ShieldCheck className="h-4 w-4" />
               </div>
-              <span>Recuperacao segura por email</span>
+              <span>Recuperação segura por email</span>
             </div>
           </div>
         </div>
@@ -84,7 +84,7 @@ export function ForgotPassword() {
                 Verifique sua caixa de entrada e clique no link para redefinir sua senha.
               </p>
               <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-disabled)', padding: 'var(--space-4)', background: 'var(--surface-card)', borderRadius: 'var(--radius-lg)', width: '100%', textAlign: 'center' }}>
-                Se nao receber o email em alguns minutos, verifique sua pasta de spam.
+                Se não receber o email em alguns minutos, verifique sua pasta de spam.
               </p>
               <button
                 type="button"
@@ -102,7 +102,7 @@ export function ForgotPassword() {
               <div className="auth-header">
                 <h1>Esqueceu a senha?</h1>
                 <p>
-                  Nao se preocupe! Digite seu email e enviaremos um link para redefinir sua senha.
+                  Não se preocupe! Digite seu email e enviaremos um link para redefinir sua senha.
                 </p>
               </div>
 
@@ -140,7 +140,7 @@ export function ForgotPassword() {
                   {isLoading ? (
                     <Loader2 className="h-5 w-5 animate-spin" />
                   ) : (
-                    'Enviar link de recuperacao'
+                    'Enviar link de recuperação'
                   )}
                 </button>
               </form>

@@ -31,7 +31,7 @@ export function NotFound() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
           >
-            Pagina nao encontrada
+            Página não encontrada
           </motion.h2>
           <motion.p
             className="not-found-description"
@@ -39,7 +39,7 @@ export function NotFound() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
           >
-            A pagina que voce procura nao existe ou foi movida.
+            A página que você procura não existe ou foi movida.
           </motion.p>
           <motion.button
             className="btn btn-primary"
@@ -51,7 +51,7 @@ export function NotFound() {
             whileTap={{ scale: 0.95 }}
           >
             <ArrowLeft className="h-4 w-4" />
-            Voltar ao inicio
+            Voltar ao início
           </motion.button>
         </div>
       </main>

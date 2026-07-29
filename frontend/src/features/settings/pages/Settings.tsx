@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { signOut, updateProfile } from 'firebase/auth'
+import toast from 'react-hot-toast'
 import { firebaseAuth } from '@/shared/infrastructure/config/auth'
 import { useAuthContext } from '@/shared/context/AuthContext'
 import { AppLayout } from '@/shared/components/AppLayout'
@@ -53,6 +54,7 @@ export function Settings() {
   const [isSaving, setIsSaving] = useState(false)
   const [saved, setSaved] = useState(false)
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
+  const [cacheCleared, setCacheCleared] = useState(false)
 
   useEffect(() => {
     applyTheme(theme)
@@ -68,7 +70,7 @@ export function Settings() {
       setSaved(true)
       setTimeout(() => setSaved(false), 2000)
     } catch (error) {
-      console.error('Erro ao salvar perfil:', error)
+      toast.error('Erro ao salvar perfil')
     } finally {
       setIsSaving(false)
     }
@@ -90,7 +92,8 @@ export function Settings() {
     localStorage.removeItem('tm_tags')
     localStorage.removeItem('tm_task_tags')
     setShowDeleteConfirm(false)
-    window.location.reload()
+    setCacheCleared(true)
+    setTimeout(() => setCacheCleared(false), 3000)
   }
 
   const userNameInitial = userName.charAt(0).toUpperCase() || user?.email?.charAt(0).toUpperCase() || 'U'
@@ -210,6 +213,7 @@ export function Settings() {
                   <p className="settings-danger-description">
                     Limpar dados locais e cache da aplicação. Os dados do servidor (hábitos, metas, etiquetas) não serão afetados.
                   </p>
+                  {cacheCleared && <p className="settings-about-value" style={{ color: '#22c55e' }}>Cache limpo com sucesso!</p>}
                   <button className="btn btn-danger btn-sm" onClick={() => setShowDeleteConfirm(true)}>
                     <Trash2 className="h-4 w-4" />
                     Limpar cache local
@@ -235,16 +239,16 @@ export function Settings() {
                   <span className="settings-about-value">1.0.0</span>
                 </div>
                 <div className="settings-about-row">
-                  <span className="settings-about-label">Framework</span>
-                  <span className="settings-about-value">React + Vite</span>
+                  <span className="settings-about-label">Descrição</span>
+                  <span className="settings-about-value">Gerenciador de tarefas, hábitos, metas e projetos</span>
                 </div>
                 <div className="settings-about-row">
-                  <span className="settings-about-label">Backend</span>
-                  <span className="settings-about-value">Firebase Cloud Functions</span>
+                  <span className="settings-about-label">Desenvolvido por</span>
+                  <span className="settings-about-value">TaskManager Team</span>
                 </div>
                 <div className="settings-about-row">
-                  <span className="settings-about-label">Banco de Dados</span>
-                  <span className="settings-about-value">Cloud Firestore</span>
+                  <span className="settings-about-label">Suporte</span>
+                  <span className="settings-about-value">taskmanager@email.com</span>
                 </div>
               </div>
             </div>

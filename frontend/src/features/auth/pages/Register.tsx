@@ -55,7 +55,7 @@ export function Register() {
               <div className="auth-hero-feature-icon">
                 <Flame className="h-4 w-4" />
               </div>
-              <span>Acompanhamento de habitos diarios</span>
+              <span>Acompanhamento de hábitos diários</span>
             </div>
             <div className="auth-hero-feature">
               <div className="auth-hero-feature-icon">
@@ -67,7 +67,7 @@ export function Register() {
               <div className="auth-hero-feature-icon">
                 <BarChart3 className="h-4 w-4" />
               </div>
-              <span>Relatorios e graficos detalhados</span>
+              <span>Relatórios e gráficos detalhados</span>
             </div>
           </div>
         </div>
@@ -84,7 +84,7 @@ export function Register() {
 
           <div className="auth-header">
             <h1>Crie sua conta</h1>
-            <p>Preencha os dados para comecar</p>
+            <p>Preencha os dados para começar</p>
           </div>
 
           <form onSubmit={form.handleSubmit(onSubmit)} className="auth-form">
@@ -203,7 +203,7 @@ export function Register() {
 
           <div className="auth-toggle">
             <p>
-              Ja tem uma conta?{' '}
+              Já tem uma conta?{' '}
               <button
                 type="button"
                 onClick={() => navigate('/login')}

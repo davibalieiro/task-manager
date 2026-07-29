@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import toast from 'react-hot-toast'
 import { useProject, useUpdateProject } from '../hooks/useProjects'
 import type { ProjectStatus } from '../types/project'
 import { tasksApi } from '@/features/tasks/api/tasks'
@@ -51,6 +52,7 @@ export function ProjectDetail() {
       queryClient.invalidateQueries({ queryKey: ['tasks', 'project', id] })
       setShowTaskForm(false)
     },
+    onError: (error) => toast.error(error.message),
   })
 
   const updateTaskMutation = useMutation({
@@ -60,6 +62,7 @@ export function ProjectDetail() {
       queryClient.invalidateQueries({ queryKey: ['tasks', 'project', id] })
       setEditingTask(null)
     },
+    onError: (error) => toast.error(error.message),
   })
 
   const deleteTaskMutation = useMutation({
@@ -67,6 +70,7 @@ export function ProjectDetail() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['tasks', 'project', id] })
     },
+    onError: (error) => toast.error(error.message),
   })
 
   const toggleTaskMutation = useMutation({
@@ -74,6 +78,7 @@ export function ProjectDetail() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['tasks', 'project', id] })
     },
+    onError: (error) => toast.error(error.message),
   })
 
   const taskForm = useForm<TaskFormData>({

@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useRef } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import {
   format,
@@ -13,6 +13,7 @@ import type { Project } from '@/features/projects/types/project'
 import { tasksApi } from '@/features/tasks/api/tasks'
 import { projectsApi } from '@/features/projects/api/projects'
 import { AppLayout } from '@/shared/components/AppLayout'
+import { PDFDownloader, PPTDownloader } from 'pdf-ppt-export-react'
 import {
   BarChart3,
   Loader2,
@@ -25,12 +26,18 @@ import {
   Target,
   Download,
   FileText,
+  MessageCircle,
+  FileImage,
 } from 'lucide-react'
 
 type TimeRange = 'week' | 'month' | 'quarter' | 'year'
 
 export function Reports() {
   const [timeRange, setTimeRange] = useState<TimeRange>('month')
+  const [phone, setPhone] = useState('')
+  const [showPDF, setShowPDF] = useState(false)
+  const [showPPT, setShowPPT] = useState(false)
+  const reportRef = useRef<HTMLDivElement>(null)
 
   const { data: tasks, isLoading: tasksLoading } = useQuery<Task[]>({
     queryKey: ['tasks'],
@@ -135,6 +142,7 @@ export function Reports() {
       totalPending,
       currentTasks: currentTasks.length,
       currentCompleted,
+      currentTasksList: currentTasks,
       tasksChange,
       completionChange,
       projectsByStatus,
@@ -149,34 +157,49 @@ export function Reports() {
   }, [tasks, projects, timeRange])
 
   const handleExportCSV = () => {
-    if (!tasks) return
-    const headers = ['Titulo', 'Status', 'Projeto', 'Criado em', 'Atualizado em']
-    const rows = tasks.map(task => [
+    if (!stats) return
+    const headers = ['Título', 'Descrição', 'Status', 'Projeto', 'Subtarefas', 'Criado em', 'Atualizado em']
+    const rows = stats.currentTasksList.map(task => [
       task.title,
-      task.status === 'todo' ? 'A Fazer' : task.status === 'in_progress' ? 'Em Andamento' : 'Concluido',
+      task.description || '',
+      task.status === 'todo' ? 'A Fazer' : task.status === 'in_progress' ? 'Em Andamento' : 'Concluído',
       projects?.find(p => p.id === task.projectId)?.name || '',
+      task.subtasks ? `${task.subtasks.filter(s => s.completed).length}/${task.subtasks.length}` : '0/0',
       new Date(task.createdAt).toLocaleDateString('pt-BR'),
       new Date(task.updatedAt).toLocaleDateString('pt-BR'),
     ])
     const csv = [headers, ...rows].map(row => row.map(cell => `"${cell}"`).join(',')).join('\n')
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
+    const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
-    a.download = `relatorio-tarefas-${new Date().toISOString().split('T')[0]}.csv`
+    a.download = `relatorio-tarefas-${timeRange}-${new Date().toISOString().split('T')[0]}.csv`
     a.click()
     URL.revokeObjectURL(url)
   }
 
   const handleExportJSON = () => {
-    if (!tasks) return
+    if (!stats) return
     const data = {
       exportDate: new Date().toISOString(),
-      tasks: tasks.map(task => ({
+      period: timeRange,
+      summary: {
+        totalTasks: stats.totalTasks,
+        totalCompleted: stats.totalCompleted,
+        totalPending: stats.totalPending,
+        completionRate: stats.completionRate,
+        tasksInPeriod: stats.currentTasks,
+        completedInPeriod: stats.currentCompleted,
+        overdueTasks: stats.overdueTasks,
+      },
+      tasks: stats.currentTasksList.map(task => ({
         title: task.title,
+        description: task.description || null,
         status: task.status,
         completed: task.completed,
         project: projects?.find(p => p.id === task.projectId)?.name || null,
+        subtasks: task.subtasks?.map(s => ({ text: s.text, completed: s.completed })) || [],
+        dueDate: task.dueDate || null,
         createdAt: task.createdAt,
         updatedAt: task.updatedAt,
       })),
@@ -185,9 +208,60 @@ export function Reports() {
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
-    a.download = `relatorio-tarefas-${new Date().toISOString().split('T')[0]}.json`
+    a.download = `relatorio-tarefas-${timeRange}-${new Date().toISOString().split('T')[0]}.json`
     a.click()
     URL.revokeObjectURL(url)
+  }
+
+  const handleExportWhatsApp = () => {
+    if (!stats || !phone.trim()) return
+    const cleanPhone = phone.replace(/\D/g, '')
+    const periodLabel = timeRange === 'week' ? 'Últimos 7 dias' : timeRange === 'month' ? 'Últimos 30 dias' : timeRange === 'quarter' ? 'Último trimestre' : 'Último ano'
+    const completed = stats.currentTasksList.filter(t => t.completed)
+    const pending = stats.currentTasksList.filter(t => !t.completed)
+    let message = `*RELATORIO DE TAREFAS*\n\n`
+    message += `Periodo: ${periodLabel}\n`
+    message += `Gerado em: ${new Date().toLocaleDateString('pt-BR')} as ${new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}\n\n`
+    message += `---------------------------\n`
+    message += `*RESUMO GERAL*\n`
+    message += `---------------------------\n\n`
+    message += `Total de tarefas: *${stats.currentTasks}*\n`
+    message += `Concluidas: *${stats.currentCompleted}*\n`
+    message += `Pendentes: *${stats.currentTasks - stats.currentCompleted}*\n`
+    message += `Taxa de conclusao: *${stats.completionRate}%*\n\n`
+
+    if (stats.overdueTasks > 0) {
+      message += `*ATENCAO: ${stats.overdueTasks} tarefa(s) ATRASADA(S)!*\n\n`
+    }
+
+    if (completed.length > 0) {
+      message += `*CONCLUIDAS (${completed.length})*\n`
+      completed.forEach(t => {
+        const project = projects?.find(p => p.id === t.projectId)
+        message += `  - ${t.title}${project ? ` [${project.name}]` : ''}\n`
+      })
+      message += '\n'
+    }
+
+    if (pending.length > 0) {
+      message += `*PENDENTES (${pending.length})*\n`
+      pending.forEach(t => {
+        const project = projects?.find(p => p.id === t.projectId)
+        message += `  - ${t.title}${project ? ` [${project.name}]` : ''}\n`
+      })
+      message += '\n'
+    }
+
+    message += `---------------------------\n`
+    message += `*METRICAS DO PERIODO*\n`
+    message += `---------------------------\n\n`
+    message += `Media: *${stats.avgTasksPerDay} tarefas/dia*\n`
+    message += `Atrasadas: *${stats.overdueTasks}*\n`
+    message += `Projetos ativos: *${stats.totalProjects}*\n\n`
+    message += `Gerado por TaskManager`
+
+    const encoded = encodeURIComponent(message)
+    window.open(`https://wa.me/55${cleanPhone}?text=${encoded}`, '_blank')
   }
 
   const isLoading = tasksLoading || projectsLoading
@@ -219,16 +293,46 @@ export function Reports() {
   return (
     <AppLayout>
       <div className="reports-header">
-          <h1 className="reports-title">Relatórios</h1>
-          <div style={{ display: 'flex', gap: 'var(--space-2)' }}>
-            <button className="btn btn-secondary btn-sm" onClick={handleExportCSV} aria-label="Exportar como CSV">
-              <Download className="h-4 w-4" />
-              CSV
-            </button>
-            <button className="btn btn-secondary btn-sm" onClick={handleExportJSON} aria-label="Exportar como JSON">
-              <FileText className="h-4 w-4" />
-              JSON
-            </button>
+          <div className="reports-header-top">
+            <h1 className="reports-title">Relatórios</h1>
+            <div className="reports-export-group">
+              <div className="reports-phone-input">
+                <input
+                  type="tel"
+                  className="form-input"
+                  placeholder="(00) 00000-0000"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  aria-label="Número do WhatsApp"
+                />
+              </div>
+              <button
+                className="btn btn-sm"
+                style={{ background: '#25d366', color: 'white' }}
+                onClick={handleExportWhatsApp}
+                disabled={!phone.trim()}
+                aria-label="Exportar para WhatsApp"
+              >
+                <MessageCircle className="h-4 w-4" />
+                WhatsApp
+              </button>
+              <button className="btn btn-secondary btn-sm" onClick={() => setShowPDF(true)} aria-label="Exportar como PDF">
+                <FileImage className="h-4 w-4" />
+                PDF
+              </button>
+              <button className="btn btn-secondary btn-sm" onClick={() => setShowPPT(true)} aria-label="Exportar como PowerPoint">
+                <FileText className="h-4 w-4" />
+                PPT
+              </button>
+              <button className="btn btn-secondary btn-sm" onClick={handleExportCSV} aria-label="Exportar como CSV">
+                <Download className="h-4 w-4" />
+                CSV
+              </button>
+              <button className="btn btn-secondary btn-sm" onClick={handleExportJSON} aria-label="Exportar como JSON">
+                <FileText className="h-4 w-4" />
+                JSON
+              </button>
+            </div>
           </div>
           <div className="reports-filters">
             {(['week', 'month', 'quarter', 'year'] as const).map((range) => (
@@ -243,6 +347,7 @@ export function Reports() {
           </div>
         </div>
 
+        <div ref={reportRef} className="reports-content">
         <div className="reports-kpi-grid">
           <div className="reports-kpi-card">
             <div className="reports-kpi-icon" style={{ backgroundColor: 'rgba(59, 130, 246, 0.1)', color: '#3b82f6' }}>
@@ -317,7 +422,7 @@ export function Reports() {
                   fill="none"
                   stroke="#22c55e"
                   strokeWidth="12"
-                  strokeDasharray={`${stats.completionRate * 3.14} ${314 - stats.completionRate * 3.14}`}
+                  strokeDasharray={`${(stats.completionRate / 100) * 2 * Math.PI * 50} ${(1 - stats.completionRate / 100) * 2 * Math.PI * 50}`}
                   strokeDashoffset="78.5"
                   strokeLinecap="round"
                 />
@@ -495,6 +600,23 @@ export function Reports() {
               ))}
             </div>
           </div>
+        )}
+        </div>
+
+        {showPDF && (
+          <PDFDownloader
+            contentRef={reportRef}
+            onClose={() => setShowPDF(false)}
+            defaultTitle={`Relatório TaskManager - ${timeRange}`}
+          />
+        )}
+
+        {showPPT && (
+          <PPTDownloader
+            contentRef={reportRef}
+            onClose={() => setShowPPT(false)}
+            defaultTitle={`Relatório TaskManager - ${timeRange}`}
+          />
         )}
     </AppLayout>
   )

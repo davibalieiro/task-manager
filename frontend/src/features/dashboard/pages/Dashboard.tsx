@@ -63,13 +63,10 @@ function useDashboardData(dateRange: string) {
   }
 
   const rangeEnd = dateRange === 'week' ? endOfWeek(now, { weekStartsOn: 1 }) : now
-  const filteredTasks =
-    dateRange === 'all'
-      ? taskList
-      : taskList.filter((t) => {
-          const created = new Date(t.createdAt)
-          return isWithinInterval(created, { start: rangeStart, end: rangeEnd })
-        })
+  const filteredTasks = taskList.filter((t) => {
+    const created = new Date(t.createdAt)
+    return isWithinInterval(created, { start: rangeStart, end: rangeEnd })
+  })
 
   const total = filteredTasks.length
   const completed = filteredTasks.filter((t) => t.completed).length
@@ -227,7 +224,7 @@ export function Dashboard() {
       <div className="dashboard-header">
         <div className="dashboard-header-left">
           <h1 className="dashboard-title">Dashboard</h1>
-          <p className="dashboard-subtitle">Visao geral do seu progresso</p>
+          <p className="dashboard-subtitle">Visão geral do seu progresso</p>
         </div>
         <div className="dashboard-header-right">
           <div className="dashboard-date-filter">
@@ -238,7 +235,7 @@ export function Dashboard() {
               onChange={(e) => setDateRange(e.target.value)}
             >
               <option value="week">Esta semana</option>
-              <option value="month">Este mes</option>
+              <option value="month">Este mês</option>
               <option value="quarter">Este trimestre</option>
               <option value="year">Este ano</option>
             </select>
@@ -270,18 +267,18 @@ export function Dashboard() {
           {
             icon: <CheckCircle2 className="h-5 w-5" />,
             iconClass: 'kpi-icon-green',
-            label: 'Concluidas',
+            label: 'Concluídas',
             value: completed,
-            detail: `Taxa de conclusao: ${completionRate}%`,
+            detail: `Taxa de conclusão: ${completionRate}%`,
             trend: trendCompleted,
             gradient: 'var(--gradient-green)',
           },
           {
             icon: <TrendingUp className="h-5 w-5" />,
             iconClass: 'kpi-icon-orange',
-            label: 'Ultimos 7 dias',
+            label: 'Últimos 7 dias',
             value: lastWeekTotal,
-            detail: `${lastWeekCompleted} concluidas nesse periodo`,
+            detail: `${lastWeekCompleted} concluídas nesse período`,
             trend: trendTotal,
             gradient: 'var(--gradient-orange)',
           },
@@ -318,7 +315,7 @@ export function Dashboard() {
       <div className="dashboard-charts-row">
         <div className="dashboard-chart-card">
           <div className="chart-card-header">
-            <h3 className="chart-card-title">Progresso de Conclusao</h3>
+            <h3 className="chart-card-title">Progresso de Conclusão</h3>
           </div>
           <div className="chart-card-content">
             <div className="progress-ring-container">
@@ -353,13 +350,13 @@ export function Dashboard() {
                 </svg>
                 <div className="progress-ring-text">
                   <span className="progress-ring-value">{completionRate}%</span>
-                  <span className="progress-ring-label">Concluido</span>
+                  <span className="progress-ring-label">Concluído</span>
                 </div>
               </div>
               <div className="progress-legend">
                 <div className="progress-legend-item">
                   <span className="progress-legend-dot" style={{ background: '#22c55e' }} />
-                  <span>Concluidas ({completed})</span>
+                  <span>Concluídas ({completed})</span>
                 </div>
                 <div className="progress-legend-item">
                   <span className="progress-legend-dot" style={{ background: 'var(--brand-500)' }} />
@@ -372,7 +369,7 @@ export function Dashboard() {
 
         <div className="dashboard-chart-card">
           <div className="chart-card-header">
-            <h3 className="chart-card-title">Atividade - Ultimos 7 Dias</h3>
+            <h3 className="chart-card-title">Atividade - Últimos 7 Dias</h3>
             <span className="chart-card-badge badge badge-primary">{lastWeekTotal} tarefas</span>
           </div>
           <div className="chart-card-content">
@@ -430,7 +427,7 @@ export function Dashboard() {
           <div className="chart-card-header">
             <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}>
               <Flame className="h-4 w-4" style={{ color: '#f97316' }} />
-              <h3 className="chart-card-title">Habitos de Hoje</h3>
+              <h3 className="chart-card-title">Hábitos de Hoje</h3>
             </div>
             <button
               className="btn btn-secondary btn-sm"
@@ -444,12 +441,12 @@ export function Dashboard() {
             {habitsTotal === 0 ? (
               <div className="chart-empty">
                 <Flame className="h-8 w-8" style={{ color: 'var(--text-disabled)' }} />
-                <p>Nenhum habito cadastrado</p>
+                <p>Nenhum hábito cadastrado</p>
                 <button
                   className="btn btn-primary btn-sm"
                   onClick={() => navigate('/habits')}
                 >
-                  Criar habito
+                  Criar hábito
                 </button>
               </div>
             ) : (
@@ -457,7 +454,7 @@ export function Dashboard() {
                 <div className="dashboard-habits-summary">
                   <div className="dashboard-habits-stat">
                     <span className="dashboard-habits-stat-value" style={{ color: '#22c55e' }}>{habitsCompleted}</span>
-                    <span className="dashboard-habits-stat-label">Concluidos</span>
+                    <span className="dashboard-habits-stat-label">Concluídos</span>
                   </div>
                   <div className="dashboard-habits-divider" />
                   <div className="dashboard-habits-stat">
@@ -530,7 +527,7 @@ export function Dashboard() {
           <div className="chart-card-header">
             <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}>
               <Target className="h-4 w-4" style={{ color: '#a855f7' }} />
-              <h3 className="chart-card-title">Acoes Rapidas</h3>
+              <h3 className="chart-card-title">Ações Rápidas</h3>
             </div>
           </div>
           <div className="chart-card-content">
@@ -551,7 +548,7 @@ export function Dashboard() {
                 <div className="quick-action-icon" style={{ background: 'rgba(249,115,22,0.15)', color: '#f97316' }}>
                   <Flame className="h-5 w-5" />
                 </div>
-                <span className="quick-action-label">Novo Habito</span>
+                <span className="quick-action-label">Novo Hábito</span>
               </button>
               <button
                 className="quick-action-card"
@@ -569,7 +566,7 @@ export function Dashboard() {
                 <div className="quick-action-icon" style={{ background: 'rgba(168,85,247,0.15)', color: '#a855f7' }}>
                   <BarChart3 className="h-5 w-5" />
                 </div>
-                <span className="quick-action-label">Relatorios</span>
+                <span className="quick-action-label">Relatórios</span>
               </button>
             </div>
           </div>
@@ -581,7 +578,7 @@ export function Dashboard() {
           <div className="chart-card-header">
             <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}>
               <Activity className="h-4 w-4" style={{ color: '#22c55e' }} />
-              <h3 className="chart-card-title">Heatmap de Habitos - Ultimas 4 Semanas</h3>
+              <h3 className="chart-card-title">Heatmap de Hábitos - Últimas 4 Semanas</h3>
             </div>
           </div>
           <div className="chart-card-content">
@@ -608,7 +605,7 @@ export function Dashboard() {
                               ? 'rgba(34,197,94,0.5)'
                               : 'rgba(34,197,94,0.8)',
                         }}
-                        title={`${format(day.date, 'dd/MM')} - ${day.count} habitos concluidos`}
+                        title={`${format(day.date, 'dd/MM')} - ${day.count} hábitos concluídos`}
                       />
                     ))}
                   </div>

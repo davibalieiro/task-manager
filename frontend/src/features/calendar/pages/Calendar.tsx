@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import toast from 'react-hot-toast'
 import {
   format,
   startOfMonth,
@@ -66,7 +67,9 @@ export function Calendar() {
       queryClient.invalidateQueries({ queryKey: ['tasks'] })
       setShowForm(false)
       form.reset()
+      toast.success('Tarefa criada com sucesso!')
     },
+    onError: (error) => toast.error(error.message),
   })
 
   const updateTaskMutation = useMutation({
@@ -76,14 +79,18 @@ export function Calendar() {
       queryClient.invalidateQueries({ queryKey: ['tasks'] })
       setEditingTask(null)
       setShowForm(false)
+      toast.success('Tarefa atualizada com sucesso!')
     },
+    onError: (error) => toast.error(error.message),
   })
 
   const deleteTaskMutation = useMutation({
     mutationFn: (id: string) => tasksApi.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['tasks'] })
+      toast.success('Tarefa excluída com sucesso!')
     },
+    onError: (error) => toast.error(error.message),
   })
 
   const toggleTaskMutation = useMutation({
@@ -91,6 +98,7 @@ export function Calendar() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['tasks'] })
     },
+    onError: (error) => toast.error(error.message),
   })
 
   const form = useForm<TaskFormData>({

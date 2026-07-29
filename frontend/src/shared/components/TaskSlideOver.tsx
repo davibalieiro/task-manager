@@ -1,6 +1,9 @@
 import { useEffect } from 'react'
+import { useQuery } from '@tanstack/react-query'
 import { motion, AnimatePresence } from 'framer-motion'
 import type { Task } from '@/features/tasks/types/task'
+import type { Project } from '@/features/projects/types/project'
+import { projectsApi } from '@/features/projects/api/projects'
 import { X, Calendar, Folder, Clock, CheckCircle2, Circle } from 'lucide-react'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
@@ -11,6 +14,14 @@ interface TaskSlideOverProps {
 }
 
 export function TaskSlideOver({ task, onClose }: TaskSlideOverProps) {
+  const { data: projects = [] } = useQuery<Project[]>({
+    queryKey: ['projects'],
+    queryFn: projectsApi.list,
+  })
+
+  const projectName = task?.projectId
+    ? projects.find((p) => p.id === task.projectId)?.name || task.projectId
+    : null
   useEffect(() => {
     if (task) {
       document.body.style.overflow = 'hidden'
@@ -54,13 +65,13 @@ export function TaskSlideOver({ task, onClose }: TaskSlideOverProps) {
             </div>
             <div className="slide-over-content">
               <div className="slide-over-field">
-                <span className="slide-over-label">Titulo</span>
+                <span className="slide-over-label">Título</span>
                 <span className="slide-over-value slide-over-value-title">{task.title}</span>
               </div>
 
               {task.description && (
                 <div className="slide-over-field">
-                  <span className="slide-over-label">Descricao</span>
+                  <span className="slide-over-label">Descrição</span>
                   <span className="slide-over-value">{task.description}</span>
                 </div>
               )}
@@ -76,7 +87,7 @@ export function TaskSlideOver({ task, onClose }: TaskSlideOverProps) {
                     <Circle className="h-4 w-4" style={{ color: 'var(--text-muted)' }} />
                   )}
                   <span>
-                    {task.completed ? 'Concluido' : task.status === 'in_progress' ? 'Em andamento' : 'A fazer'}
+                    {task.completed ? 'Concluído' : task.status === 'in_progress' ? 'Em andamento' : 'A fazer'}
                   </span>
                 </div>
               </div>
@@ -99,7 +110,7 @@ export function TaskSlideOver({ task, onClose }: TaskSlideOverProps) {
                     <Folder className="h-3 w-3" />
                     Projeto
                   </span>
-                  <span className="slide-over-value">{task.projectId}</span>
+                  <span className="slide-over-value">{projectName}</span>
                 </div>
               )}
 
@@ -127,7 +138,7 @@ export function TaskSlideOver({ task, onClose }: TaskSlideOverProps) {
                   Criado em
                 </span>
                 <span className="slide-over-value">
-                  {format(new Date(task.createdAt), "dd/MM/yyyy 'as' HH:mm", { locale: ptBR })}
+                  {format(new Date(task.createdAt), "dd/MM/yyyy 'às' HH:mm", { locale: ptBR })}
                 </span>
               </div>
 
@@ -137,7 +148,7 @@ export function TaskSlideOver({ task, onClose }: TaskSlideOverProps) {
                   Atualizado em
                 </span>
                 <span className="slide-over-value">
-                  {format(new Date(task.updatedAt), "dd/MM/yyyy 'as' HH:mm", { locale: ptBR })}
+                  {format(new Date(task.updatedAt), "dd/MM/yyyy 'às' HH:mm", { locale: ptBR })}
                 </span>
               </div>
             </div>

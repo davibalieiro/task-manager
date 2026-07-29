@@ -101,8 +101,8 @@ export function Goals() {
     if (!tasks || !projects) return []
 
     const now = new Date()
-    const weekStart = startOfWeek(now, { weekStartsOn: 0 })
-    const weekEnd = endOfWeek(now, { weekStartsOn: 0 })
+    const weekStart = startOfWeek(now, { weekStartsOn: 1 })
+    const weekEnd = endOfWeek(now, { weekStartsOn: 1 })
     const monthStart = startOfMonth(now)
     const monthEnd = endOfMonth(now)
 

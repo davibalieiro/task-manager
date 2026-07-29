@@ -81,10 +81,10 @@ export function Login() {
             <span className="auth-hero-logo-text">TaskManager</span>
           </div>
           <h2 className="auth-hero-title">
-            Organize sua vida com eficiencia
+            Organize sua vida com eficiência
           </h2>
           <p className="auth-hero-description">
-            Gerencie tarefas, projetos e habitos em um so lugar.
+            Gerencie tarefas, projetos e hábitos em um só lugar.
             Aumente sua produtividade com ferramentas inteligentes.
           </p>
           <div className="auth-hero-features">
@@ -98,7 +98,7 @@ export function Login() {
               <div className="auth-hero-feature-icon">
                 <Flame className="h-4 w-4" />
               </div>
-              <span>Acompanhamento de habitos diarios</span>
+              <span>Acompanhamento de hábitos diários</span>
             </div>
             <div className="auth-hero-feature">
               <div className="auth-hero-feature-icon">
@@ -110,7 +110,7 @@ export function Login() {
               <div className="auth-hero-feature-icon">
                 <BarChart3 className="h-4 w-4" />
               </div>
-              <span>Relatorios e graficos detalhados</span>
+              <span>Relatórios e gráficos detalhados</span>
             </div>
           </div>
         </div>
@@ -307,7 +307,7 @@ export function Login() {
 
           <div className="auth-toggle">
             <p>
-              {isRegister ? 'Ja tem uma conta?' : 'Nao tem uma conta?'}{' '}
+              {isRegister ? 'Já tem uma conta?' : 'Não tem uma conta?'}{' '}
               <button
                 type="button"
                 onClick={toggleMode}
@@ -317,7 +317,7 @@ export function Login() {
               </button>
             </p>
             <p className="auth-terms">
-              Ao continuar, voce concorda com nossos{' '}
+              Ao continuar, você concorda com nossos{' '}
               <a href="/terms">Termos</a>
               {' '}e{' '}
               <a href="/privacy">Privacidade</a>
