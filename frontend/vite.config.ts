@@ -14,7 +14,6 @@ export default defineConfig({
       '/api': {
         target: 'http://localhost:5001/task-manager-5e728/us-central1',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ''),
       },
     },
   },

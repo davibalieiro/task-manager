@@ -16,9 +16,8 @@ export interface AuthResult {
 }
 
 function getFunctionUrl(path: string): string {
-  const functionName = path.replace(/^\//, '').toLowerCase()
   if (runBase) {
-    return `https://${functionName}-${runBase}`
+    return `https://api-${runBase}${path}`
   }
   return `/api${path}`
 }

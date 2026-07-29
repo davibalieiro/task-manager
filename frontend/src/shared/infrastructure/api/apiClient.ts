@@ -4,8 +4,7 @@ const runBase = import.meta.env.VITE_RUN_BASE || ''
 
 function getFunctionUrl(endpoint: string): string {
   if (runBase) {
-    const functionName = endpoint.split('?')[0].replace(/^\//, '').toLowerCase()
-    return `https://${functionName}-${runBase}`
+    return `https://api-${runBase}${endpoint}`
   }
   return `/api${endpoint}`
 }
