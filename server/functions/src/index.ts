@@ -1,4 +1,4 @@
-import { setGlobalOptions } from "firebase-functions";
+import { onRequest } from "firebase-functions/v2/https";
 
 import { register } from "./modules/auth/presentation/register";
 import { login } from "./modules/auth/presentation/login";
@@ -36,38 +36,30 @@ import { assignTag } from "./modules/tags/presentation/assignTag";
 import { unassignTag } from "./modules/tags/presentation/unassignTag";
 import { listTaskTags } from "./modules/tags/presentation/listTaskTags";
 
-setGlobalOptions({ maxInstances: 10, cpu: 0.167 });
-
-export {
-  // Auth
+const routes: Record<string, (req: any, res: any) => void | Promise<void>> = {
   register,
   login,
   me,
   logout,
   session,
-  // Tasks
   listTasks,
   createTask,
   updateTask,
   toggleTask,
   deleteTask,
-  // Projects
   listProjects,
   createProject,
   getProject,
   updateProject,
   deleteProject,
-  // Habits
   listHabits,
   createHabit,
   updateHabit,
   deleteHabit,
-  // Goals
   listGoals,
   createGoal,
   updateGoal,
   deleteGoal,
-  // Tags
   listTags,
   createTag,
   updateTag,
@@ -76,3 +68,15 @@ export {
   unassignTag,
   listTaskTags,
 };
+
+export const api = onRequest({ cors: true }, async (req, res) => {
+  const path = req.path.replace(/^\//, "").split("?")[0];
+  const handler = routes[path];
+
+  if (!handler) {
+    res.status(404).json({ message: `Rota não encontrada: ${path}` });
+    return;
+  }
+
+  return handler(req, res);
+});

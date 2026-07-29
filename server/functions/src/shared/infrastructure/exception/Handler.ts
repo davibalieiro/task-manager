@@ -9,6 +9,7 @@ function getCorsHeaders(origin?: string) {
     "http://localhost:5173",
     "http://localhost:4173",
     "http://localhost:3000",
+    "https://task-manager-virid-ten.vercel.app",
     process.env.ALLOWED_ORIGIN,
   ].filter((o): o is string => !!o);
 
