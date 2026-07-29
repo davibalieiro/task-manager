@@ -1,8 +1,19 @@
 import { getSessionCookie } from '../config/auth'
 
+const runBase = import.meta.env.VITE_RUN_BASE || ''
+
+function getFunctionUrl(endpoint: string): string {
+  if (runBase) {
+    const functionName = endpoint.split('?')[0].replace(/^\//, '').toLowerCase()
+    return `https://${functionName}-${runBase}`
+  }
+  return `/api${endpoint}`
+}
+
 export async function apiRequest<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
   const token = getSessionCookie()
-  const res = await fetch(`/api${endpoint}`, {
+  const url = getFunctionUrl(endpoint)
+  const res = await fetch(url, {
     headers: {
       'Content-Type': 'application/json',
       ...(token && { Authorization: `Bearer ${token}` }),

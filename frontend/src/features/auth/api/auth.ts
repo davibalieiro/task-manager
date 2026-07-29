@@ -8,9 +8,19 @@ import {
 } from "@/shared/infrastructure/config/auth";
 import type { User } from "../types/auth";
 
+const runBase = import.meta.env.VITE_RUN_BASE || ''
+
 export interface AuthResult {
   user: User;
   token: string;
+}
+
+function getFunctionUrl(path: string): string {
+  const functionName = path.replace(/^\//, '').toLowerCase()
+  if (runBase) {
+    return `https://${functionName}-${runBase}`
+  }
+  return `/api${path}`
 }
 
 async function getCurrentUser(): Promise<User> {
@@ -21,7 +31,7 @@ async function getCurrentUser(): Promise<User> {
   const token = getSessionCookie();
   if (!token) throw new Error("Sessão expirada");
 
-  const res = await fetch("/api/auth/me", {
+  const res = await fetch(getFunctionUrl("/me"), {
     headers: { Authorization: `Bearer ${token}` },
   });
 
@@ -35,7 +45,7 @@ export const authApi = {
     const token = await syncSession(true);
     if (!token) throw new Error("Erro ao sincronizar sessão");
 
-    const res = await fetch("/api/auth/me", {
+    const res = await fetch(getFunctionUrl("/me"), {
       headers: { Authorization: `Bearer ${token}` },
     });
 
@@ -49,7 +59,7 @@ export const authApi = {
     const credential = await _signUp(email, password);
     const token = await credential.user.getIdToken() as string;
 
-    const regRes = await fetch("/api/auth/register", {
+    const regRes = await fetch(getFunctionUrl("/register"), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -65,7 +75,7 @@ export const authApi = {
 
     await syncSession(true);
 
-    const res = await fetch("/api/auth/me", {
+    const res = await fetch(getFunctionUrl("/me"), {
       headers: { Authorization: `Bearer ${token}` },
     });
 
@@ -84,7 +94,7 @@ export const authApi = {
     const firebaseUser = firebaseAuth.currentUser;
     if (!firebaseUser) throw new Error("Erro ao obter usuário Google");
 
-    const res = await fetch("/api/auth/me", {
+    const res = await fetch(getFunctionUrl("/me"), {
       headers: { Authorization: `Bearer ${token}` },
     });
 
@@ -94,7 +104,7 @@ export const authApi = {
     }
 
     // First time Google login - register the user
-    await fetch("/api/auth/register", {
+    await fetch(getFunctionUrl("/register"), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -108,7 +118,7 @@ export const authApi = {
 
     await syncSession(true);
 
-    const meRes = await fetch("/api/auth/me", {
+    const meRes = await fetch(getFunctionUrl("/me"), {
       headers: { Authorization: `Bearer ${token}` },
     });
 
