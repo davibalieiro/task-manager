@@ -23,6 +23,7 @@ function initTheme() {
   }
 }
 
+
 initTheme()
 
 ReactDOM.createRoot(document.getElementById('root') ?? document.body).render(
