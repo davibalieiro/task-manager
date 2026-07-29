@@ -7,6 +7,7 @@ import { AppError } from "./AppError";
 function getCorsHeaders(origin?: string) {
   const allowedOrigins = [
     "http://localhost:5173",
+    "http://localhost:4173",
     "http://localhost:3000",
     process.env.ALLOWED_ORIGIN,
   ].filter((o): o is string => !!o);

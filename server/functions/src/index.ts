@@ -36,7 +36,7 @@ import { assignTag } from "./modules/tags/presentation/assignTag";
 import { unassignTag } from "./modules/tags/presentation/unassignTag";
 import { listTaskTags } from "./modules/tags/presentation/listTaskTags";
 
-setGlobalOptions({ maxInstances: 10 });
+setGlobalOptions({ maxInstances: 10, cpu: 0.167 });
 
 export {
   // Auth
