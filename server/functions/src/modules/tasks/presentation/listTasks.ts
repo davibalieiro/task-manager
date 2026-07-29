@@ -4,8 +4,8 @@ import type { TaskResult } from "../application/ListTasksService";
 
 const service = new ListTasksService();
 
-class ListTasksHandler extends Handler<void, TaskResult[]> {
-  async handle(_input: void, uid: string): Promise<TaskResult[]> {
+class ListTasksHandler extends Handler<undefined, TaskResult[]> {
+  async handle(_input: undefined, uid: string): Promise<TaskResult[]> {
     return service.execute(uid);
   }
 }

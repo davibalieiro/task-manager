@@ -4,8 +4,8 @@ import type { HabitResult } from "../application/ListHabitsService";
 
 const service = new ListHabitsService();
 
-class ListHabitsHandler extends Handler<void, HabitResult[]> {
-  async handle(_input: void, uid: string): Promise<HabitResult[]> {
+class ListHabitsHandler extends Handler<undefined, HabitResult[]> {
+  async handle(_input: undefined, uid: string): Promise<HabitResult[]> {
     return service.execute(uid);
   }
 }

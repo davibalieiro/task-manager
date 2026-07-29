@@ -4,8 +4,8 @@ import type { MeResult } from "../application/GetMeService";
 
 const service = new GetMeService();
 
-class MeHandler extends Handler<void, MeResult> {
-  async handle(_input: void, uid: string): Promise<MeResult> {
+class MeHandler extends Handler<undefined, MeResult> {
+  async handle(_input: undefined, uid: string): Promise<MeResult> {
     return service.execute(uid);
   }
 }

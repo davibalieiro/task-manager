@@ -21,7 +21,7 @@ class SessionHandler extends Handler<SessionInput, SessionResult> {
     try {
       await auth.verifyIdToken(idToken);
       return { success: true };
-    } catch (error) {
+    } catch (_error) {
       throw new AppError("unauthenticated", "Invalid ID token");
     }
   }

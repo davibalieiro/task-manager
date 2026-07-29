@@ -15,11 +15,11 @@ export class RegisterService {
   async execute(email: string, password: string, name: string): Promise<RegisterResult> {
     logger.info("Registering new user", { email });
 
-    let userRecord;
+    let userRecord: Awaited<ReturnType<typeof auth.createUser>>;
     try {
       userRecord = await auth.createUser({ email, password, displayName: name });
-    } catch (error: any) {
-      if (error.message?.includes("auth/email-already-exists")) {
+    } catch (error: unknown) {
+      if (error instanceof Error && error.message?.includes("auth/email-already-exists")) {
         throw new AppError("already-exists", "Este email já está em uso");
       }
       throw error;
@@ -33,7 +33,7 @@ export class RegisterService {
         name,
         createdAt: now,
       });
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to create user document, cleaning up auth user", { uid: userRecord.uid });
       await auth.deleteUser(userRecord.uid).catch(() => {});
       throw new AppError("internal", "Erro ao criar perfil do usuário");

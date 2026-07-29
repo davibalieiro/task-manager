@@ -4,8 +4,8 @@ import type { GoalResult } from "../application/ListGoalsService";
 
 const service = new ListGoalsService();
 
-class ListGoalsHandler extends Handler<void, GoalResult[]> {
-  async handle(_input: void, uid: string): Promise<GoalResult[]> {
+class ListGoalsHandler extends Handler<undefined, GoalResult[]> {
+  async handle(_input: undefined, uid: string): Promise<GoalResult[]> {
     return service.execute(uid);
   }
 }
