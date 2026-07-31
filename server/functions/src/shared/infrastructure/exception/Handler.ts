@@ -9,6 +9,7 @@ function getCorsHeaders(origin?: string) {
     "http://localhost:5173",
     "http://localhost:4173",
     "http://localhost:3000",
+    "https://task-manager-mova.vercel.app",
     "https://task-manager-virid-ten.vercel.app",
     process.env.ALLOWED_ORIGIN,
   ].filter((o): o is string => !!o);
@@ -63,8 +64,15 @@ export abstract class Handler<TInput = unknown, TOutput = unknown> {
           return;
         }
 
-        logger.error("Unhandled exception in handler", { error });
-        res.status(500).json({ message: "Erro interno do servidor" });
+        logger.error("Unhandled exception in handler", {
+          message: error instanceof Error ? error.message : String(error),
+          stack: error instanceof Error ? error.stack : undefined,
+          name: error instanceof Error ? error.name : undefined,
+        });
+        res.status(500).json({
+          message: "Erro interno do servidor",
+          detail: error instanceof Error ? error.message : String(error),
+        });
       }
     });
   }
