@@ -7,9 +7,10 @@ import toast from 'react-hot-toast'
 import { useProject, useUpdateProject } from '../hooks/useProjects'
 import type { ProjectStatus } from '../types/project'
 import { tasksApi } from '@/features/tasks/api/tasks'
-import type { Task } from '@/features/tasks/types/task'
+import type { Task, Subtask, CreateTaskInput, UpdateTaskInput } from '@/features/tasks/types/task'
+import { Subtasks } from '@/features/tasks/components/Subtasks'
 import { AppLayout } from '@/shared/components/AppLayout'
-import { ArrowLeft, Loader2, Plus, Trash2, Edit2, CheckSquare } from 'lucide-react'
+import { ArrowLeft, Loader2, Plus, Trash2, Edit2, CheckSquare, Calendar } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -23,6 +24,8 @@ const STATUS_OPTIONS: { value: ProjectStatus; label: string }[] = [
 const taskSchema = z.object({
   title: z.string().min(1, 'Título é obrigatório').max(100),
   description: z.string().max(500).optional(),
+  dueDate: z.string().optional(),
+  status: z.enum(['todo', 'in_progress', 'done']).optional(),
 })
 
 type TaskFormData = z.infer<typeof taskSchema>
@@ -33,6 +36,7 @@ export function ProjectDetail() {
   const queryClient = useQueryClient()
   const [showTaskForm, setShowTaskForm] = useState(false)
   const [editingTask, setEditingTask] = useState<Task | null>(null)
+  const [editingSubtasks, setEditingSubtasks] = useState<Subtask[]>([])
 
   const { data: project, isLoading: projectLoading } = useProject(id || '')
   const updateProject = useUpdateProject()
@@ -47,19 +51,21 @@ export function ProjectDetail() {
   })
 
   const createTask = useMutation({
-    mutationFn: (data: TaskFormData) => tasksApi.create({ ...data, projectId: id }),
+    mutationFn: (data: CreateTaskInput) => tasksApi.create({ ...data, projectId: id }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['tasks', 'project', id] })
+      toast.success('Tarefa criada com sucesso!')
       setShowTaskForm(false)
     },
     onError: (error) => toast.error(error.message),
   })
 
   const updateTaskMutation = useMutation({
-    mutationFn: ({ taskId, data }: { taskId: string; data: TaskFormData }) =>
+    mutationFn: ({ taskId, data }: { taskId: string; data: UpdateTaskInput }) =>
       tasksApi.update(taskId, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['tasks', 'project', id] })
+      toast.success('Tarefa atualizada com sucesso!')
       setEditingTask(null)
     },
     onError: (error) => toast.error(error.message),
@@ -83,12 +89,12 @@ export function ProjectDetail() {
 
   const taskForm = useForm<TaskFormData>({
     resolver: zodResolver(taskSchema),
-    defaultValues: { title: '', description: '' },
+    defaultValues: { title: '', description: '', dueDate: '', status: 'todo' },
   })
 
   const updateTaskForm = useForm<TaskFormData>({
     resolver: zodResolver(taskSchema),
-    defaultValues: { title: '', description: '' },
+    defaultValues: { title: '', description: '', dueDate: '', status: 'todo' },
   })
 
   const handleStatusChange = (status: ProjectStatus) => {
@@ -97,17 +103,34 @@ export function ProjectDetail() {
   }
 
   const handleCreateTask = (data: TaskFormData) => {
-    createTask.mutate(data, { onSuccess: () => taskForm.reset() })
+    createTask.mutate({
+      title: data.title,
+      description: data.description,
+      dueDate: data.dueDate || undefined,
+      status: data.status || 'todo',
+    }, { onSuccess: () => taskForm.reset() })
   }
 
   const handleUpdateTask = (data: TaskFormData) => {
     if (!editingTask) return
-    updateTaskMutation.mutate({ taskId: editingTask.id, data }, { onSuccess: () => updateTaskForm.reset() })
+    updateTaskMutation.mutate({ taskId: editingTask.id, data: {
+      title: data.title,
+      description: data.description,
+      dueDate: data.dueDate || undefined,
+      status: data.status || editingTask.status,
+      subtasks: editingSubtasks,
+    } }, { onSuccess: () => updateTaskForm.reset() })
   }
 
   const handleEditTask = (task: Task) => {
     setEditingTask(task)
-    updateTaskForm.reset({ title: task.title, description: task.description || '' })
+    setEditingSubtasks(task.subtasks || [])
+    updateTaskForm.reset({
+      title: task.title,
+      description: task.description || '',
+      dueDate: task.dueDate ? task.dueDate.split('T')[0] : '',
+      status: task.status || 'todo',
+    })
     setShowTaskForm(true)
   }
 
@@ -216,6 +239,11 @@ export function ProjectDetail() {
                         placeholder="Título da tarefa"
                         {...(editingTask ? updateTaskForm.register('title') : taskForm.register('title'))}
                       />
+                      {(editingTask ? updateTaskForm.formState.errors.title : taskForm.formState.errors.title) && (
+                        <p className="form-error">
+                          {(editingTask ? updateTaskForm.formState.errors.title : taskForm.formState.errors.title)?.message}
+                        </p>
+                      )}
                     </div>
                     <div className="form-group">
                       <label className="form-label" htmlFor="task-desc">Descrição (opcional)</label>
@@ -227,13 +255,46 @@ export function ProjectDetail() {
                         {...(editingTask ? updateTaskForm.register('description') : taskForm.register('description'))}
                       />
                     </div>
+                    <div className="task-form-row">
+                      <div className="form-group">
+                        <label className="form-label" htmlFor="task-dueDate">Data de vencimento</label>
+                        <input
+                          id="task-dueDate"
+                          type="date"
+                          className="form-input"
+                          {...(editingTask ? updateTaskForm.register('dueDate') : taskForm.register('dueDate'))}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label className="form-label" htmlFor="task-status">Status</label>
+                        <select
+                          id="task-status"
+                          className="form-input"
+                          {...(editingTask ? updateTaskForm.register('status') : taskForm.register('status'))}
+                        >
+                          <option value="todo">A Fazer</option>
+                          <option value="in_progress">Em Andamento</option>
+                          <option value="done">Concluído</option>
+                        </select>
+                      </div>
+                    </div>
+                    {editingTask && (
+                      <div className="form-group">
+                        <label className="form-label">Subtarefas</label>
+                        <Subtasks
+                          subtasks={editingSubtasks}
+                          onChange={setEditingSubtasks}
+                          disabled={updateTaskMutation.isPending}
+                        />
+                      </div>
+                    )}
                     <div className="task-form-actions">
                       <button type="submit" className="btn btn-primary" disabled={createTask.isPending || updateTaskMutation.isPending}>
                         {createTask.isPending || updateTaskMutation.isPending ? (
                           <><Loader2 className="h-4 w-4 animate-spin" /> Salvando...</>
                         ) : editingTask ? 'Salvar' : 'Criar'}
                       </button>
-                      <button type="button" className="btn btn-secondary" onClick={() => { setShowTaskForm(false); setEditingTask(null); }}>
+                      <button type="button" className="btn btn-secondary" onClick={() => { setShowTaskForm(false); setEditingTask(null); setEditingSubtasks([]); }}>
                         Cancelar
                       </button>
                     </div>
@@ -262,6 +323,24 @@ export function ProjectDetail() {
                   <div className="task-content">
                     <h3 className="task-title">{task.title}</h3>
                     {task.description && <p className="task-description">{task.description}</p>}
+                    <div className="task-meta-row">
+                      <span className={`task-status-badge task-status-${task.status}`}>
+                        {task.status === 'todo' ? 'A Fazer' : task.status === 'in_progress' ? 'Em Andamento' : 'Concluído'}
+                      </span>
+                      {task.dueDate && (
+                        <span className="task-due-badge">
+                          <Calendar className="h-3 w-3" />
+                          {format(new Date(task.dueDate), 'dd/MM/yyyy', { locale: ptBR })}
+                        </span>
+                      )}
+                    </div>
+                    {task.subtasks && task.subtasks.length > 0 && (
+                      <div className="task-subtasks">
+                        <div className="task-subtask-progress">
+                          {task.subtasks.filter(st => st.completed).length}/{task.subtasks.length} subtarefas concluídas
+                        </div>
+                      </div>
+                    )}
                   </div>
                   <div className="task-actions">
                     <button className="task-action-btn" onClick={() => handleEditTask(task)} title="Editar">
