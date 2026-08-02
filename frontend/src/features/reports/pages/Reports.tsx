@@ -104,7 +104,6 @@ export function Reports() {
 
     const projectsByStatus = {
       pending: projects.filter((p) => p.status === 'pending').length,
-      in_progress: projects.filter((p) => p.status === 'in_progress').length,
       completed: projects.filter((p) => p.status === 'completed').length,
     }
 
@@ -518,20 +517,6 @@ export function Reports() {
                     style={{
                       width: `${stats.totalProjects > 0 ? (stats.projectsByStatus.pending / stats.totalProjects) * 100 : 0}%`,
                       backgroundColor: '#eab308',
-                    }}
-                  />
-                </div>
-              </div>
-              <div className="reports-dist-item">
-                <div className="reports-dist-color" style={{ backgroundColor: '#3b82f6' }} />
-                <span className="reports-dist-label">Em Andamento</span>
-                <span className="reports-dist-value">{stats.projectsByStatus.in_progress}</span>
-                <div className="reports-dist-bar">
-                  <div
-                    className="reports-dist-fill"
-                    style={{
-                      width: `${stats.totalProjects > 0 ? (stats.projectsByStatus.in_progress / stats.totalProjects) * 100 : 0}%`,
-                      backgroundColor: '#3b82f6',
                     }}
                   />
                 </div>

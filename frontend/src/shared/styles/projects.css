@@ -87,6 +87,14 @@
   transform: translateY(-2px);
 }
 
+.project-card-pending {
+  border-left: 3px solid #eab308;
+}
+
+.project-card-completed {
+  border-left: 3px solid #22c55e;
+}
+
 .project-card-header {
   display: flex;
   align-items: flex-start;
@@ -289,12 +297,36 @@
   align-items: center;
   gap: var(--space-3);
   margin-bottom: var(--space-6);
+  flex-wrap: wrap;
 }
 
 .project-detail-status-label {
   font-size: var(--text-sm);
   font-weight: var(--font-medium);
   color: var(--text-primary);
+}
+
+.project-detail-status-auto {
+  display: flex;
+  align-items: center;
+}
+
+.project-status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
+  color: white;
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+}
+
+.project-status-pending {
+  background: #eab308;
+}
+
+.project-status-completed {
+  background: #22c55e;
 }
 
 .project-detail-status-buttons {
@@ -386,6 +418,224 @@
   color: var(--text-primary);
 }
 
+/* ── Status Distribution Bar ─────────────────────────────────────────────── */
+.project-status-distribution {
+  margin-top: var(--space-3);
+}
+
+.status-dist-bar {
+  display: flex;
+  height: 0.375rem;
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  background: var(--border-default);
+  gap: 2px;
+}
+
+.status-dist-segment {
+  border-radius: var(--radius-full);
+  transition: width var(--transition-base);
+}
+
+.status-dist-done {
+  background: #22c55e;
+}
+
+.status-dist-progress {
+  background: #f59e0b;
+}
+
+.status-dist-todo {
+  background: #6366f1;
+}
+
+/* ── Status Stats Cards ──────────────────────────────────────────────────── */
+.project-detail-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
+}
+
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background: var(--surface-card);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-xl);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.stat-card:hover {
+  border-color: var(--border-hover);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.stat-card.active {
+  border-color: var(--brand-500);
+  box-shadow: 0 0 0 1px var(--brand-500);
+}
+
+.stat-card .stat-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--radius-lg);
+  flex-shrink: 0;
+}
+
+.stat-card-todo .stat-icon {
+  background: rgba(99, 102, 241, 0.15);
+  color: #818cf8;
+}
+
+.stat-card-progress .stat-icon {
+  background: rgba(249, 115, 22, 0.15);
+  color: #fb923c;
+}
+
+.stat-card-done .stat-icon {
+  background: rgba(34, 197, 94, 0.15);
+  color: #4ade80;
+}
+
+.light-theme .stat-card-todo .stat-icon {
+  color: #6366f1;
+}
+
+.light-theme .stat-card-progress .stat-icon {
+  color: #ea580c;
+}
+
+.light-theme .stat-card-done .stat-icon {
+  color: #16a34a;
+}
+
+.stat-card .stat-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-card .stat-value {
+  font-size: var(--text-2xl);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.stat-card .stat-label {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  margin-top: var(--space-1);
+}
+
+/* ── Project Tasks Filters ───────────────────────────────────────────────── */
+.project-tasks-filters {
+  display: flex;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+.project-tasks-filters .filter-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.filter-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.25rem;
+  height: 1.25rem;
+  padding: 0 var(--space-1);
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-full);
+  font-size: 0.625rem;
+  font-weight: var(--font-semibold);
+}
+
+.filter-btn.active .filter-count {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* ── Project Card Stats ──────────────────────────────────────────────────── */
+.project-card-stats {
+  margin-top: var(--space-1);
+}
+
+.project-card-progress-bar {
+  height: 0.25rem;
+  background: var(--border-default);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  margin-bottom: var(--space-2);
+}
+
+.project-card-progress-fill {
+  height: 100%;
+  background: var(--brand-500);
+  border-radius: var(--radius-full);
+  transition: width var(--transition-base);
+}
+
+.project-card-stat-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.project-card-stat {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+}
+
+.project-card-stat-total {
+  margin-left: auto;
+  font-size: var(--text-xs);
+  color: var(--text-disabled);
+}
+
+.stat-dot {
+  width: 0.375rem;
+  height: 0.375rem;
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+}
+
+.stat-dot-done {
+  background: #22c55e;
+}
+
+.stat-dot-progress {
+  background: #f59e0b;
+}
+
+.stat-dot-todo {
+  background: #6366f1;
+}
+
+.light-theme .stat-dot-done {
+  background: #16a34a;
+}
+
+.light-theme .stat-dot-progress {
+  background: #ea580c;
+}
+
+.light-theme .stat-dot-todo {
+  background: #6366f1;
+}
+
 /* ── Responsive ───────────────────────────────────────────────────────────── */
 @media (max-width: 768px) {
   .projects-header {
@@ -470,6 +720,19 @@
     padding: var(--space-3) var(--space-4);
   }
 
+  .project-detail-stats {
+    grid-template-columns: 1fr;
+    gap: var(--space-2);
+  }
+
+  .stat-card {
+    padding: var(--space-3);
+  }
+
+  .project-tasks-filters {
+    flex-wrap: wrap;
+  }
+
   .project-tasks-header {
     flex-direction: column;
     align-items: flex-start;
@@ -521,5 +784,15 @@
     flex-direction: column;
     align-items: flex-start;
     gap: var(--space-1);
+  }
+
+  .project-card-stat-row {
+    flex-wrap: wrap;
+    gap: var(--space-1);
+  }
+
+  .project-card-stat-total {
+    margin-left: 0;
+    width: 100%;
   }
 }

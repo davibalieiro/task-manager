@@ -1,9 +1,12 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
+import { useQuery } from '@tanstack/react-query'
 import { useProjects, useCreateProject, useUpdateProject, useDeleteProject } from '../hooks/useProjects'
 import type { Project, ProjectStatus } from '../types/project'
+import type { Task } from '@/features/tasks/types/task'
+import { tasksApi } from '@/features/tasks/api/tasks'
 import { AppLayout } from '@/shared/components/AppLayout'
 import { ConfirmDialog } from '@/shared/components/ConfirmDialog'
 import { Plus, Trash2, Edit2, Loader2, FolderKanban, ArrowRight } from 'lucide-react'
@@ -18,13 +21,11 @@ const PROJECT_COLORS = [
 
 const STATUS_LABELS: Record<ProjectStatus, string> = {
   pending: 'Pendente',
-  in_progress: 'Em andamento',
   completed: 'Concluído',
 }
 
 const STATUS_COLORS: Record<ProjectStatus, string> = {
   pending: '#eab308',
-  in_progress: '#3b82f6',
   completed: '#22c55e',
 }
 
@@ -39,6 +40,30 @@ export function ProjectList() {
   const createProject = useCreateProject()
   const updateProject = useUpdateProject()
   const deleteProject = useDeleteProject()
+
+  const { data: allTasks = [] } = useQuery<Task[]>({
+    queryKey: ['tasks'],
+    queryFn: tasksApi.list,
+  })
+
+  const taskStats = useMemo(() => {
+    const stats: Record<string, { todo: number; in_progress: number; done: number; total: number }> = {}
+    allTasks.forEach((task) => {
+      if (!task.projectId) return
+      if (!stats[task.projectId]) {
+        stats[task.projectId] = { todo: 0, in_progress: 0, done: 0, total: 0 }
+      }
+      stats[task.projectId].total++
+      if (task.status === 'done' || task.completed) {
+        stats[task.projectId].done++
+      } else if (task.status === 'in_progress') {
+        stats[task.projectId].in_progress++
+      } else {
+        stats[task.projectId].todo++
+      }
+    })
+    return stats
+  }, [allTasks])
 
   const form = useForm<CreateProjectFormData>({
     resolver: zodResolver(createProjectSchema),
@@ -137,7 +162,7 @@ export function ProjectList() {
         </div>
 
         <div className="projects-filters">
-          {(['all', 'pending', 'in_progress', 'completed'] as const).map((status) => (
+          {(['all', 'pending', 'completed'] as const).map((status) => (
             <button
               key={status}
               className={`filter-btn ${filterStatus === status ? 'active' : ''}`}
@@ -236,10 +261,13 @@ export function ProjectList() {
               </p>
             </div>
           ) : (
-            filteredProjects?.map((project) => (
+            filteredProjects?.map((project) => {
+              const stats = taskStats[project.id]
+              const progress = stats && stats.total > 0 ? Math.round((stats.done / stats.total) * 100) : 0
+              return (
               <div
                 key={project.id}
-                className="project-card"
+                className={`project-card project-card-${project.status}`}
                 onClick={() => navigate(`/projects/${project.id}`)}
               >
                 <div className="project-card-header">
@@ -265,6 +293,25 @@ export function ProjectList() {
                 {project.description && (
                   <p className="project-card-description">{project.description}</p>
                 )}
+                {stats && stats.total > 0 && (
+                  <div className="project-card-stats">
+                    <div className="project-card-progress-bar">
+                      <div className="project-card-progress-fill" style={{ width: `${progress}%` }} />
+                    </div>
+                    <div className="project-card-stat-row">
+                      <span className="project-card-stat">
+                        <span className="stat-dot stat-dot-done" /> {stats.done}
+                      </span>
+                      <span className="project-card-stat">
+                        <span className="stat-dot stat-dot-progress" /> {stats.in_progress}
+                      </span>
+                      <span className="project-card-stat">
+                        <span className="stat-dot stat-dot-todo" /> {stats.todo}
+                      </span>
+                      <span className="project-card-stat-total">{stats.total} tarefas</span>
+                    </div>
+                  </div>
+                )}
                 <div className="project-card-footer">
                   <span
                     className="project-status-badge"
@@ -280,7 +327,7 @@ export function ProjectList() {
                   Ver detalhes <ArrowRight className="h-4 w-4" />
                 </div>
               </div>
-            ))
+            )})
           )}
         </div>
     </AppLayout>

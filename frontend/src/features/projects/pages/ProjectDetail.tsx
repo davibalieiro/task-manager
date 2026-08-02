@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
@@ -7,19 +7,13 @@ import toast from 'react-hot-toast'
 import { useProject, useUpdateProject } from '../hooks/useProjects'
 import type { ProjectStatus } from '../types/project'
 import { tasksApi } from '@/features/tasks/api/tasks'
-import type { Task, Subtask, CreateTaskInput, UpdateTaskInput } from '@/features/tasks/types/task'
+import type { Task, Subtask, TaskStatus, CreateTaskInput, UpdateTaskInput } from '@/features/tasks/types/task'
 import { Subtasks } from '@/features/tasks/components/Subtasks'
 import { AppLayout } from '@/shared/components/AppLayout'
-import { ArrowLeft, Loader2, Plus, Trash2, Edit2, CheckSquare, Calendar } from 'lucide-react'
+import { ArrowLeft, Loader2, Plus, Trash2, Edit2, CheckSquare, Calendar, Circle, CheckCircle2 } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-
-const STATUS_OPTIONS: { value: ProjectStatus; label: string }[] = [
-  { value: 'pending', label: 'Pendente' },
-  { value: 'in_progress', label: 'Em andamento' },
-  { value: 'completed', label: 'Concluído' },
-]
 
 const taskSchema = z.object({
   title: z.string().min(1, 'Título é obrigatório').max(100),
@@ -134,9 +128,41 @@ export function ProjectDetail() {
     setShowTaskForm(true)
   }
 
-  const completedCount = tasks?.filter((t) => t.completed).length || 0
-  const totalCount = tasks?.length || 0
-  const progress = totalCount > 0 ? (completedCount / totalCount) * 100 : 0
+  const [statusFilter, setStatusFilter] = useState<TaskStatus | 'all'>('all')
+
+  const tasksByStatus = useMemo(() => {
+    const list = tasks || []
+    return {
+      todo: list.filter((t) => t.status === 'todo' && !t.completed).length,
+      in_progress: list.filter((t) => t.status === 'in_progress' && !t.completed).length,
+      done: list.filter((t) => t.status === 'done' || t.completed).length,
+      total: list.length,
+    }
+  }, [tasks])
+
+  const progress = tasksByStatus.total > 0
+    ? Math.round((tasksByStatus.done / tasksByStatus.total) * 100)
+    : 0
+
+  const autoStatus: ProjectStatus = tasksByStatus.total > 0 && tasksByStatus.todo === 0 && tasksByStatus.in_progress === 0
+    ? 'completed'
+    : 'pending'
+
+  const effectiveStatus = project?.status === 'completed' && autoStatus === 'pending'
+    ? project.status
+    : autoStatus
+
+  const handleManualComplete = () => {
+    if (!id) return
+    updateProject.mutate({ id, data: { status: 'completed' } })
+  }
+
+  const filteredTasks = useMemo(() => {
+    const list = tasks || []
+    if (statusFilter === 'all') return list
+    if (statusFilter === 'done') return list.filter((t) => t.status === 'done' || t.completed)
+    return list.filter((t) => t.status === statusFilter && !t.completed)
+  }, [tasks, statusFilter])
 
   if (projectLoading || tasksLoading) {
     return (
@@ -180,27 +206,59 @@ export function ProjectDetail() {
 
         <div className="project-detail-status">
           <span className="project-detail-status-label">Status:</span>
+          <div className="project-detail-status-auto">
+            <span className={`project-status-badge project-status-${effectiveStatus}`}>
+              {effectiveStatus === 'completed' ? 'Concluído' : 'Pendente'}
+            </span>
+          </div>
           <div className="project-detail-status-buttons">
-            {STATUS_OPTIONS.map((opt) => (
+            <button
+              className={`status-btn ${project.status === 'completed' ? 'active' : ''}`}
+              onClick={handleManualComplete}
+              disabled={updateProject.isPending}
+            >
+              Marcar como Concluído
+            </button>
+            {project.status === 'completed' && autoStatus === 'pending' && (
               <button
-                key={opt.value}
-                className={`status-btn ${project.status === opt.value ? 'active' : ''}`}
-                onClick={() => handleStatusChange(opt.value)}
+                className="status-btn"
+                onClick={() => handleStatusChange('pending')}
                 disabled={updateProject.isPending}
               >
-                {opt.label}
+                Reverter para Pendente
               </button>
-            ))}
+            )}
           </div>
         </div>
 
         <div className="project-detail-progress">
           <div className="progress-header">
             <span className="progress-label">Progresso</span>
-            <span className="progress-count">{completedCount}/{totalCount} tarefas</span>
+            <span className="progress-count">{progress}%</span>
           </div>
           <div className="progress-bar">
             <div className="progress-fill" style={{ width: `${progress}%` }} />
+          </div>
+        </div>
+
+        <div className="project-detail-stats">
+          <div className="stat-card stat-card-todo" onClick={() => setStatusFilter(statusFilter === 'todo' ? 'all' : 'todo')}>
+            <div className="stat-icon">
+              <Circle className="h-5 w-5" />
+            </div>
+            <div className="stat-info">
+              <span className="stat-value">{tasksByStatus.todo}</span>
+              <span className="stat-label">A Fazer</span>
+            </div>
+          </div>
+          <div className="stat-card stat-card-done" onClick={() => setStatusFilter(statusFilter === 'done' ? 'all' : 'done')}>
+            <div className="stat-icon">
+              <CheckCircle2 className="h-5 w-5" />
+            </div>
+            <div className="stat-info">
+              <span className="stat-value">{tasksByStatus.done}</span>
+              <span className="stat-label">Concluído</span>
+            </div>
           </div>
         </div>
 
@@ -217,6 +275,21 @@ export function ProjectDetail() {
               <Plus className="h-4 w-4" />
               Nova Tarefa
             </button>
+          </div>
+
+          <div className="project-tasks-filters">
+            {(['all', 'todo', 'in_progress', 'done'] as const).map((status) => (
+              <button
+                key={status}
+                className={`filter-btn ${statusFilter === status ? 'active' : ''}`}
+                onClick={() => setStatusFilter(status)}
+              >
+                {status === 'all' ? 'Todas' : status === 'todo' ? 'A Fazer' : status === 'in_progress' ? 'Em Andamento' : 'Concluído'}
+                <span className="filter-count">
+                  {status === 'all' ? tasksByStatus.total : status === 'todo' ? tasksByStatus.todo : status === 'in_progress' ? tasksByStatus.in_progress : tasksByStatus.done}
+                </span>
+              </button>
+            ))}
           </div>
 
           {(showTaskForm || editingTask) && (
@@ -305,14 +378,18 @@ export function ProjectDetail() {
           )}
 
           <div className="tasks-list">
-            {tasks?.length === 0 ? (
+            {filteredTasks?.length === 0 ? (
               <div className="tasks-empty">
                 <CheckSquare className="tasks-empty-icon" />
-                <h3 className="tasks-empty-title">Nenhuma tarefa neste projeto</h3>
-                <p className="tasks-empty-description">Adicione tarefas ao projeto.</p>
+                <h3 className="tasks-empty-title">
+                  {statusFilter !== 'all' ? 'Nenhuma tarefa neste status' : 'Nenhuma tarefa neste projeto'}
+                </h3>
+                <p className="tasks-empty-description">
+                  {statusFilter !== 'all' ? 'Tente mudar o filtro.' : 'Adicione tarefas ao projeto.'}
+                </p>
               </div>
             ) : (
-              tasks?.map((task) => (
+              filteredTasks?.map((task) => (
                 <div key={task.id} className={`task-item ${task.completed ? 'completed' : ''}`}>
                   <input
                     type="checkbox"
