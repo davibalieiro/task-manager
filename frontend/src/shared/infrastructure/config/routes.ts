@@ -1,4 +1,4 @@
-// Route configuration for Task Manager
+// Route configuration for Mova
 // Based on serview architecture
 
 export interface RouteConfig {

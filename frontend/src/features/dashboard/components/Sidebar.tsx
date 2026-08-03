@@ -87,8 +87,8 @@ export function Sidebar({ collapsed, onToggle, onNavigate }: SidebarProps) {
     <aside className={`sidebar ${collapsed ? 'sidebar-collapsed' : ''}`} role="navigation" aria-label="Menu principal">
       <div className="sidebar-header">
         <div className="sidebar-logo" onClick={collapsed ? onToggle : undefined} style={collapsed ? { cursor: 'pointer' } : undefined}>
-          <div className="sidebar-logo-icon">TM</div>
-          {!collapsed && <span className="sidebar-logo-text">TaskManager</span>}
+          <div className="sidebar-logo-icon">M</div>
+          {!collapsed && <span className="sidebar-logo-text">Mova</span>}
         </div>
         <button className="sidebar-toggle" onClick={onToggle} title={collapsed ? 'Expandir' : 'Minimizar'}>
           {collapsed ? <PanelLeftOpen className="sidebar-toggle-icon" /> : <PanelLeftClose className="sidebar-toggle-icon" />}

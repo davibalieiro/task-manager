@@ -45,7 +45,7 @@ export function ForgotPassword() {
             <div className="auth-hero-logo-icon">
               <Calendar className="w-7 h-7 text-white" />
             </div>
-            <span className="auth-hero-logo-text">TaskManager</span>
+            <span className="auth-hero-logo-text">Mova</span>
           </div>
           <h2 className="auth-hero-title">
             Segurança da sua conta
@@ -71,7 +71,7 @@ export function ForgotPassword() {
             <div className="auth-hero-logo-icon">
               <Calendar className="w-6 h-6 text-white" />
             </div>
-            <span className="auth-hero-logo-text" style={{ color: 'var(--text-primary)' }}>TaskManager</span>
+            <span className="auth-hero-logo-text" style={{ color: 'var(--text-primary)' }}>Mova</span>
           </div>
 
           {isSubmitted ? (

@@ -257,7 +257,7 @@ export function Reports() {
     message += `Media: *${stats.avgTasksPerDay} tarefas/dia*\n`
     message += `Atrasadas: *${stats.overdueTasks}*\n`
     message += `Projetos ativos: *${stats.totalProjects}*\n\n`
-    message += `Gerado por TaskManager`
+    message += `Gerado por Mova`
 
     const encoded = encodeURIComponent(message)
     window.open(`https://wa.me/55${cleanPhone}?text=${encoded}`, '_blank')
@@ -592,7 +592,7 @@ export function Reports() {
           <PDFDownloader
             contentRef={reportRef}
             onClose={() => setShowPDF(false)}
-            defaultTitle={`Relatório TaskManager - ${timeRange}`}
+            defaultTitle={`Relatório Mova - ${timeRange}`}
           />
         )}
 
@@ -600,7 +600,7 @@ export function Reports() {
           <PPTDownloader
             contentRef={reportRef}
             onClose={() => setShowPPT(false)}
-            defaultTitle={`Relatório TaskManager - ${timeRange}`}
+            defaultTitle={`Relatório Mova - ${timeRange}`}
           />
         )}
     </AppLayout>

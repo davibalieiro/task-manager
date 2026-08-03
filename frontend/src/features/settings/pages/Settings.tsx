@@ -231,7 +231,7 @@ export function Settings() {
               <div className="settings-about">
                 <div className="settings-about-row">
                   <span className="settings-about-label">Aplicação</span>
-                  <span className="settings-about-value">TaskManager</span>
+                  <span className="settings-about-value">Mova</span>
                 </div>
                 <div className="settings-about-row">
                   <span className="settings-about-label">Versão</span>
@@ -243,11 +243,11 @@ export function Settings() {
                 </div>
                 <div className="settings-about-row">
                   <span className="settings-about-label">Desenvolvido por</span>
-                  <span className="settings-about-value">TaskManager Team</span>
+                  <span className="settings-about-value">Mova Team</span>
                 </div>
                 <div className="settings-about-row">
                   <span className="settings-about-label">Suporte</span>
-                  <span className="settings-about-value">taskmanager@email.com</span>
+                  <span className="settings-about-value">suporte@mova.app</span>
                 </div>
               </div>
             </div>
