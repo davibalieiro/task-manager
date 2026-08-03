@@ -145,8 +145,13 @@
 
 .settings-theme-btn.active {
   border-color: var(--brand-500);
-  background: rgba(59, 130, 246, 0.1);
-  color: var(--brand-500);
+  background: rgba(59, 130, 246, 0.08);
+  color: var(--brand-600);
+}
+
+.light-theme .settings-theme-btn.active {
+  background: rgba(59, 130, 246, 0.06);
+  color: var(--brand-600);
 }
 
 /* ── Account Actions ──────────────────────────────────────────────────────── */

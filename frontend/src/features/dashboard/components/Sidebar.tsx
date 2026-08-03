@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { signOut } from 'firebase/auth'
 import { firebaseAuth } from '@/shared/infrastructure/config/auth'
@@ -10,13 +11,13 @@ import {
   BarChart3,
   Settings,
   Target,
-  ListTodo,
-  Tags,
   Flame,
   LogOut,
   PanelLeftClose,
   PanelLeftOpen,
   ChevronRight,
+  Moon,
+  Sun,
 } from 'lucide-react'
 
 interface SidebarProps {
@@ -29,7 +30,7 @@ const mainNav = [
   { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
   { to: '/tasks', icon: CheckSquare, label: 'Tarefas' },
   { to: '/projects', icon: FolderKanban, label: 'Projetos' },
-  { to: '/board', icon: ListTodo, label: 'Kanban' },
+
 ]
 
 const toolsNav = [
@@ -37,12 +38,34 @@ const toolsNav = [
   { to: '/calendar', icon: Calendar, label: 'Calendário' },
   { to: '/goals', icon: Target, label: 'Metas' },
   { to: '/reports', icon: BarChart3, label: 'Relatórios' },
-  { to: '/tags', icon: Tags, label: 'Etiquetas' },
+
 ]
 
 export function Sidebar({ collapsed, onToggle, onNavigate }: SidebarProps) {
   const navigate = useNavigate()
   const { user } = useAuthContext()
+  const [isDark, setIsDark] = useState(true)
+
+  useEffect(() => {
+    const stored = localStorage.getItem('tm_theme') as 'dark' | 'light' | 'system' | null
+    const theme = stored || 'dark'
+    if (theme === 'light') {
+      setIsDark(false)
+    } else if (theme === 'dark') {
+      setIsDark(true)
+    } else {
+      setIsDark(window.matchMedia('(prefers-color-scheme: dark)').matches)
+    }
+  }, [])
+
+  const toggleTheme = () => {
+    const root = document.documentElement
+    const newIsDark = !isDark
+    setIsDark(newIsDark)
+    root.classList.remove('light-theme', 'dark-theme')
+    root.classList.add(newIsDark ? 'dark-theme' : 'light-theme')
+    localStorage.setItem('tm_theme', newIsDark ? 'dark' : 'light')
+  }
 
   const handleLogout = async () => {
     try {
@@ -121,6 +144,15 @@ export function Sidebar({ collapsed, onToggle, onNavigate }: SidebarProps) {
           )}
         </div>
         <div className="sidebar-footer-actions">
+          <button
+            className="sidebar-link"
+            onClick={toggleTheme}
+            title={collapsed ? (isDark ? 'Modo Claro' : 'Modo Escuro') : undefined}
+            aria-label={isDark ? 'Alternar para modo claro' : 'Alternar para modo escuro'}
+          >
+            {isDark ? <Sun className="sidebar-link-icon" /> : <Moon className="sidebar-link-icon" />}
+            {!collapsed && <span className="sidebar-link-label">{isDark ? 'Modo Claro' : 'Modo Escuro'}</span>}
+          </button>
           <NavLink
             to="/settings"
             className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}

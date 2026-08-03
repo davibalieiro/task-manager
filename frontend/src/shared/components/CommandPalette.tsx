@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { tasksApi } from '@/features/tasks/api/tasks'
-import { Search, X, CheckCircle2, Clock, Target, Calendar, BarChart3, Settings, Flame } from 'lucide-react'
+import { Search, X, CheckCircle2, Target, Calendar, BarChart3, Settings, Flame } from 'lucide-react'
 
 interface CommandPaletteProps {
   open: boolean
@@ -12,7 +12,7 @@ interface CommandPaletteProps {
 const NAV_ITEMS = [
   { label: 'Dashboard', path: '/', icon: BarChart3 },
   { label: 'Tarefas', path: '/tasks', icon: CheckCircle2 },
-  { label: 'Board', path: '/board', icon: Clock },
+
   { label: 'Calendário', path: '/calendar', icon: Calendar },
   { label: 'Hábitos', path: '/habits', icon: Flame },
   { label: 'Metas', path: '/goals', icon: Target },

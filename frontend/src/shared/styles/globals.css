@@ -26,6 +26,7 @@ body {
   color: var(--text-primary);
   background-color: var(--surface-bg);
   min-height: 100vh;
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 a {
@@ -126,6 +127,11 @@ img {
   border-top-color: var(--brand-500);
   border-radius: var(--radius-full);
   animation: spin 0.75s linear infinite;
+}
+
+.light-theme .spinner {
+  border-color: rgba(30, 41, 59, 0.12);
+  border-top-color: var(--brand-500);
 }
 
 .spinner-lg {

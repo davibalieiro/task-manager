@@ -89,8 +89,7 @@ export function Settings() {
     localStorage.removeItem('tm_habits')
     localStorage.removeItem('tm_habits_last_reset')
     localStorage.removeItem('tm_goals')
-    localStorage.removeItem('tm_tags')
-    localStorage.removeItem('tm_task_tags')
+
     setShowDeleteConfirm(false)
     setCacheCleared(true)
     setTimeout(() => setCacheCleared(false), 3000)

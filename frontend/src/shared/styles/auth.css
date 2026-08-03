@@ -272,6 +272,16 @@
   box-shadow: var(--shadow-md);
 }
 
+.light-theme .btn-google {
+  background: #f6f8fb;
+  border-color: rgba(30, 41, 59, 0.1);
+}
+
+.light-theme .btn-google:hover:not(:disabled) {
+  background: #edf0f5;
+  border-color: rgba(30, 41, 59, 0.15);
+}
+
 .btn-google:disabled {
   opacity: 0.5;
   cursor: not-allowed;
@@ -289,7 +299,7 @@
 }
 
 .auth-toggle button {
-  color: var(--brand-400);
+  color: var(--brand-500);
   font-weight: var(--font-medium);
   background: none;
   border: none;
@@ -298,7 +308,15 @@
 }
 
 .auth-toggle button:hover {
-  color: var(--brand-300);
+  color: var(--brand-600);
+}
+
+.light-theme .auth-toggle button {
+  color: var(--brand-600);
+}
+
+.light-theme .auth-toggle button:hover {
+  color: var(--brand-700);
 }
 
 /* ── Auth Terms ────────────────────────────────────────────────────────────── */
@@ -333,7 +351,7 @@
 
 .auth-forgot {
   font-size: var(--text-sm);
-  color: var(--brand-400);
+  color: var(--brand-500);
   background: none;
   border: none;
   cursor: pointer;
@@ -341,7 +359,15 @@
 }
 
 .auth-forgot:hover {
-  color: var(--brand-300);
+  color: var(--brand-600);
+}
+
+.light-theme .auth-forgot {
+  color: var(--brand-600);
+}
+
+.light-theme .auth-forgot:hover {
+  color: var(--brand-700);
 }
 
 /* ── Responsive ────────────────────────────────────────────────────────────── */

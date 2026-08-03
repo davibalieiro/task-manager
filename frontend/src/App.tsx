@@ -16,11 +16,9 @@ const Dashboard = lazy(() => import('@/features/dashboard/pages/Dashboard').then
 const Habits = lazy(() => import('@/features/habits/pages/Habits').then(m => ({ default: m.Habits })))
 const ProjectList = lazy(() => import('@/features/projects/pages/ProjectList').then(m => ({ default: m.ProjectList })))
 const ProjectDetail = lazy(() => import('@/features/projects/pages/ProjectDetail').then(m => ({ default: m.ProjectDetail })))
-const Board = lazy(() => import('@/features/board/pages/Board').then(m => ({ default: m.Board })))
 const Calendar = lazy(() => import('@/features/calendar/pages/Calendar').then(m => ({ default: m.Calendar })))
 const Goals = lazy(() => import('@/features/goals/pages/Goals').then(m => ({ default: m.Goals })))
 const Reports = lazy(() => import('@/features/reports/pages/Reports').then(m => ({ default: m.Reports })))
-const TagsPage = lazy(() => import('@/features/tags/pages/Tags').then(m => ({ default: m.TagsPage })))
 const Settings = lazy(() => import('@/features/settings/pages/Settings').then(m => ({ default: m.Settings })))
 
 const queryClient = new QueryClient({
@@ -85,11 +83,7 @@ function AppRoutes() {
             <ProjectDetail />
           </ProtectedRoute>
         } />
-        <Route path="/board" element={
-          <ProtectedRoute>
-            <Board />
-          </ProtectedRoute>
-        } />
+
         <Route path="/calendar" element={
           <ProtectedRoute>
             <Calendar />
@@ -105,11 +99,7 @@ function AppRoutes() {
             <Reports />
           </ProtectedRoute>
         } />
-        <Route path="/tags" element={
-          <ProtectedRoute>
-            <TagsPage />
-          </ProtectedRoute>
-        } />
+
         <Route path="/settings" element={
           <ProtectedRoute>
             <Settings />

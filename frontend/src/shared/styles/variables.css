@@ -37,20 +37,21 @@
   --error-600: #dc2626;
 
   /* ── Surface Colors ────────────────────────────────────────────────────── */
-  --surface-bg: #0a0a0f;
-  --surface-card: rgba(255, 255, 255, 0.03);
-  --surface-card-hover: rgba(255, 255, 255, 0.06);
-  --surface-overlay: rgba(0, 0, 0, 0.5);
+  --surface-bg: #0b0e14;
+  --surface-card: rgba(22, 30, 44, 0.6);
+  --surface-card-hover: rgba(22, 30, 44, 0.8);
+  --surface-elevated: rgba(30, 41, 59, 0.7);
+  --surface-overlay: rgba(0, 0, 0, 0.6);
 
   /* ── Text Colors ───────────────────────────────────────────────────────── */
-  --text-primary: #ffffff;
-  --text-secondary: rgba(255, 255, 255, 0.7);
-  --text-muted: rgba(255, 255, 255, 0.5);
-  --text-disabled: rgba(255, 255, 255, 0.3);
+  --text-primary: #f1f5f9;
+  --text-secondary: rgba(241, 245, 249, 0.7);
+  --text-muted: rgba(241, 245, 249, 0.5);
+  --text-disabled: rgba(241, 245, 249, 0.3);
 
   /* ── Border Colors ─────────────────────────────────────────────────────── */
-  --border-default: rgba(255, 255, 255, 0.1);
-  --border-hover: rgba(255, 255, 255, 0.2);
+  --border-default: rgba(148, 163, 184, 0.15);
+  --border-hover: rgba(148, 163, 184, 0.25);
   --border-focus: var(--brand-500);
 
   /* ── Gradients ─────────────────────────────────────────────────────────── */
@@ -122,23 +123,24 @@
 
 /* ── Light Theme ─────────────────────────────────────────────────────────── */
 .light-theme {
-  --surface-bg: #f1f5f9;
-  --surface-card: rgba(255, 255, 255, 0.9);
-  --surface-card-hover: rgba(255, 255, 255, 1);
-  --surface-overlay: rgba(0, 0, 0, 0.3);
+  --surface-bg: #eef2f6;
+  --surface-card: #f6f8fb;
+  --surface-card-hover: #edf0f5;
+  --surface-elevated: #f6f8fb;
+  --surface-overlay: rgba(30, 41, 59, 0.3);
 
-  --text-primary: #0f172a;
-  --text-secondary: rgba(15, 23, 42, 0.7);
-  --text-muted: rgba(15, 23, 42, 0.5);
-  --text-disabled: rgba(15, 23, 42, 0.3);
+  --text-primary: #1e293b;
+  --text-secondary: rgba(30, 41, 59, 0.72);
+  --text-muted: rgba(30, 41, 59, 0.52);
+  --text-disabled: rgba(30, 41, 59, 0.32);
 
-  --border-default: rgba(0, 0, 0, 0.1);
-  --border-hover: rgba(0, 0, 0, 0.2);
+  --border-default: rgba(30, 41, 59, 0.08);
+  --border-hover: rgba(30, 41, 59, 0.14);
   --border-focus: var(--brand-500);
 
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.06);
-  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.08);
-  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
-  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.12);
-  --shadow-brand: 0 4px 14px rgba(59, 130, 246, 0.2);
+  --shadow-sm: 0 1px 2px rgba(30, 41, 59, 0.06);
+  --shadow-md: 0 4px 6px -1px rgba(30, 41, 59, 0.07), 0 2px 4px -2px rgba(30, 41, 59, 0.04);
+  --shadow-lg: 0 10px 15px -3px rgba(30, 41, 59, 0.08), 0 4px 6px -4px rgba(30, 41, 59, 0.03);
+  --shadow-xl: 0 20px 25px -5px rgba(30, 41, 59, 0.1), 0 8px 10px -6px rgba(30, 41, 59, 0.04);
+  --shadow-brand: 0 4px 14px -3px rgba(59, 130, 246, 0.18), 0 2px 4px -2px rgba(59, 130, 246, 0.08);
 }

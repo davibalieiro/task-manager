@@ -85,12 +85,7 @@ export const routes: Record<string, RouteConfig> = {
     requiresAuth: true,
     redirect: '/login',
   },
-  tags: {
-    path: '/tags',
-    isPublic: false,
-    requiresAuth: true,
-    redirect: '/login',
-  },
+
   settings: {
     path: '/settings',
     isPublic: false,
