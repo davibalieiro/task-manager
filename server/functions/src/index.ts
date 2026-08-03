@@ -28,14 +28,6 @@ import { createGoal } from "./modules/goals/presentation/createGoal";
 import { updateGoal } from "./modules/goals/presentation/updateGoal";
 import { deleteGoal } from "./modules/goals/presentation/deleteGoal";
 
-import { listTags } from "./modules/tags/presentation/listTags";
-import { createTag } from "./modules/tags/presentation/createTag";
-import { updateTag } from "./modules/tags/presentation/updateTag";
-import { deleteTag } from "./modules/tags/presentation/deleteTag";
-import { assignTag } from "./modules/tags/presentation/assignTag";
-import { unassignTag } from "./modules/tags/presentation/unassignTag";
-import { listTaskTags } from "./modules/tags/presentation/listTaskTags";
-
 const routes: Record<string, (req: any, res: any) => void | Promise<void>> = {
   register,
   login,
@@ -60,13 +52,7 @@ const routes: Record<string, (req: any, res: any) => void | Promise<void>> = {
   createGoal,
   updateGoal,
   deleteGoal,
-  listTags,
-  createTag,
-  updateTag,
-  deleteTag,
-  assignTag,
-  unassignTag,
-  listTaskTags,
+
 };
 
 export const api = onRequest({ cors: true }, async (req, res) => {
