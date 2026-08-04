@@ -5,6 +5,10 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { registerSchema, type RegisterFormData } from '@/features/auth/schemas/auth'
 import { useRegister } from '@/features/auth/hooks/useAuth'
 import { User, Mail, Lock, Eye, EyeOff, Loader2, Calendar, CheckSquare, Target, Flame, BarChart3 } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Card, CardContent } from '@/components/ui/card'
 
 export function Register() {
   const navigate = useNavigate()
@@ -75,144 +79,145 @@ export function Register() {
 
       <div className="auth-form-panel">
         <div className="auth-card">
-          <div className="auth-logo">
-            <div className="auth-hero-logo-icon">
-              <Calendar className="w-6 h-6 text-white" />
-            </div>
-            <span className="auth-hero-logo-text" style={{ color: 'var(--text-primary)' }}>Mova</span>
-          </div>
-
-          <div className="auth-header">
-            <h1>Crie sua conta</h1>
-            <p>Preencha os dados para começar</p>
-          </div>
-
-          <form onSubmit={form.handleSubmit(onSubmit)} className="auth-form">
-            <div className="form-group">
-              <label className="form-label" htmlFor="name">Nome</label>
-              <div className="form-input-icon">
-                <User className="form-input-icon-left h-4 w-4" />
-                <input
-                  id="name"
-                  type="text"
-                  className="form-input"
-                  placeholder="Seu nome"
-                  disabled={isPending}
-                  autoComplete="name"
-                  {...form.register('name')}
-                />
+          <Card>
+            <CardContent className="p-6">
+              <div className="auth-logo">
+                <div className="auth-hero-logo-icon">
+                  <Calendar className="w-6 h-6 text-white" />
+                </div>
+                <span className="auth-hero-logo-text" style={{ color: 'hsl(var(--foreground))' }}>Mova</span>
               </div>
-              {form.formState.errors.name && (
-                <p className="form-error">{form.formState.errors.name.message}</p>
-              )}
-            </div>
 
-            <div className="form-group">
-              <label className="form-label" htmlFor="email">Email</label>
-              <div className="form-input-icon">
-                <Mail className="form-input-icon-left h-4 w-4" />
-                <input
-                  id="email"
-                  type="email"
-                  className="form-input"
-                  placeholder="seu@email.com"
-                  disabled={isPending}
-                  autoComplete="email"
-                  {...form.register('email')}
-                />
+              <div className="auth-header">
+                <h1>Crie sua conta</h1>
+                <p>Preencha os dados para começar</p>
               </div>
-              {form.formState.errors.email && (
-                <p className="form-error">{form.formState.errors.email.message}</p>
-              )}
-            </div>
 
-            <div className="form-group">
-              <label className="form-label" htmlFor="password">Senha</label>
-              <div className="form-input-icon">
-                <Lock className="form-input-icon-left h-4 w-4" />
-                <input
-                  id="password"
-                  type={showPassword ? 'text' : 'password'}
-                  className="form-input"
-                  placeholder="••••••••"
+              <form onSubmit={form.handleSubmit(onSubmit)} className="auth-form">
+                <div className="form-group">
+                  <Label htmlFor="name">Nome</Label>
+                  <div className="form-input-icon">
+                    <User className="form-input-icon-left h-4 w-4" />
+                    <Input
+                      id="name"
+                      type="text"
+                      placeholder="Seu nome"
+                      disabled={isPending}
+                      autoComplete="name"
+                      {...form.register('name')}
+                    />
+                  </div>
+                  {form.formState.errors.name && (
+                    <p className="form-error">{form.formState.errors.name.message}</p>
+                  )}
+                </div>
+
+                <div className="form-group">
+                  <Label htmlFor="email">Email</Label>
+                  <div className="form-input-icon">
+                    <Mail className="form-input-icon-left h-4 w-4" />
+                    <Input
+                      id="email"
+                      type="email"
+                      placeholder="seu@email.com"
+                      disabled={isPending}
+                      autoComplete="email"
+                      {...form.register('email')}
+                    />
+                  </div>
+                  {form.formState.errors.email && (
+                    <p className="form-error">{form.formState.errors.email.message}</p>
+                  )}
+                </div>
+
+                <div className="form-group">
+                  <Label htmlFor="password">Senha</Label>
+                  <div className="form-input-icon">
+                    <Lock className="form-input-icon-left h-4 w-4" />
+                    <Input
+                      id="password"
+                      type={showPassword ? 'text' : 'password'}
+                      placeholder="••••••••"
+                      disabled={isPending}
+                      autoComplete="new-password"
+                      {...form.register('password')}
+                    />
+                    <button
+                      type="button"
+                      className="form-input-icon-right"
+                      onClick={() => setShowPassword(!showPassword)}
+                      disabled={isPending}
+                      tabIndex={-1}
+                    >
+                      {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    </button>
+                  </div>
+                  {form.formState.errors.password && (
+                    <p className="form-error">{form.formState.errors.password.message}</p>
+                  )}
+                </div>
+
+                <div className="form-group">
+                  <Label htmlFor="confirmPassword">Confirmar senha</Label>
+                  <div className="form-input-icon">
+                    <Lock className="form-input-icon-left h-4 w-4" />
+                    <Input
+                      id="confirmPassword"
+                      type={showConfirmPassword ? 'text' : 'password'}
+                      placeholder="••••••••"
+                      disabled={isPending}
+                      autoComplete="new-password"
+                      {...form.register('confirmPassword')}
+                    />
+                    <button
+                      type="button"
+                      className="form-input-icon-right"
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      disabled={isPending}
+                      tabIndex={-1}
+                    >
+                      {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    </button>
+                  </div>
+                  {form.formState.errors.confirmPassword && (
+                    <p className="form-error">{form.formState.errors.confirmPassword.message}</p>
+                  )}
+                </div>
+
+                {form.formState.errors.root && (
+                  <div className="form-error" style={{ textAlign: 'center', padding: '0.75rem', background: 'hsl(var(--destructive) / 0.1)', borderRadius: 'var(--radius)', border: '1px solid hsl(var(--destructive) / 0.2)' }}>
+                    {form.formState.errors.root.message}
+                  </div>
+                )}
+
+                <Button
+                  type="submit"
+                  className="w-full"
+                  size="lg"
                   disabled={isPending}
-                  autoComplete="new-password"
-                  {...form.register('password')}
-                />
-                <button
-                  type="button"
-                  className="form-input-icon-right"
-                  onClick={() => setShowPassword(!showPassword)}
-                  disabled={isPending}
-                  tabIndex={-1}
                 >
-                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                </button>
+                  {isPending ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    'Criar conta'
+                  )}
+                </Button>
+              </form>
+
+              <div className="auth-toggle">
+                <p>
+                  Já tem uma conta?{' '}
+                  <button
+                    type="button"
+                    onClick={() => navigate('/login')}
+                    disabled={isPending}
+                  >
+                    Entrar
+                  </button>
+                </p>
               </div>
-              {form.formState.errors.password && (
-                <p className="form-error">{form.formState.errors.password.message}</p>
-              )}
-            </div>
-
-            <div className="form-group">
-              <label className="form-label" htmlFor="confirmPassword">Confirmar senha</label>
-              <div className="form-input-icon">
-                <Lock className="form-input-icon-left h-4 w-4" />
-                <input
-                  id="confirmPassword"
-                  type={showConfirmPassword ? 'text' : 'password'}
-                  className="form-input"
-                  placeholder="••••••••"
-                  disabled={isPending}
-                  autoComplete="new-password"
-                  {...form.register('confirmPassword')}
-                />
-                <button
-                  type="button"
-                  className="form-input-icon-right"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  disabled={isPending}
-                  tabIndex={-1}
-                >
-                  {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                </button>
-              </div>
-              {form.formState.errors.confirmPassword && (
-                <p className="form-error">{form.formState.errors.confirmPassword.message}</p>
-              )}
-            </div>
-
-            {form.formState.errors.root && (
-              <div className="form-error" style={{ textAlign: 'center', padding: 'var(--space-3)', background: 'rgba(239, 68, 68, 0.1)', borderRadius: 'var(--radius-lg)', border: '1px solid rgba(239, 68, 68, 0.2)' }}>
-                {form.formState.errors.root.message}
-              </div>
-            )}
-
-            <button
-              type="submit"
-              className="btn btn-primary btn-full btn-lg"
-              disabled={isPending}
-            >
-              {isPending ? (
-                <Loader2 className="h-5 w-5 animate-spin" />
-              ) : (
-                'Criar conta'
-              )}
-            </button>
-          </form>
-
-          <div className="auth-toggle">
-            <p>
-              Já tem uma conta?{' '}
-              <button
-                type="button"
-                onClick={() => navigate('/login')}
-                disabled={isPending}
-              >
-                Entrar
-              </button>
-            </p>
-          </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>
