@@ -33,7 +33,7 @@
 
 .btn-primary:hover:not(:disabled) {
   background: var(--gradient-brand-hover);
-  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.3);
+  box-shadow: 0 6px 20px rgba(249, 115, 22, 0.3);
 }
 
 .light-theme .btn-primary {
@@ -42,7 +42,7 @@
 }
 
 .light-theme .btn-primary:hover:not(:disabled) {
-  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.25);
+  box-shadow: 0 6px 20px rgba(249, 115, 22, 0.25);
 }
 
 .btn-secondary {
@@ -129,11 +129,11 @@
 
 .form-input:focus {
   border-color: var(--border-focus);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.12);
 }
 
 .light-theme .form-input:focus {
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
 }
 
 .form-input:disabled {
@@ -195,7 +195,7 @@
 .checkbox-input {
   width: 1rem;
   height: 1rem;
-  accent-color: var(--brand-500);
+  accent-color: var(--orange-500);
   cursor: pointer;
 }
 
@@ -245,8 +245,8 @@
 }
 
 .badge-primary {
-  background: rgba(59, 130, 246, 0.12);
-  color: var(--brand-600);
+  background: rgba(249, 115, 22, 0.12);
+  color: var(--orange-600);
 }
 
 .badge-success {
@@ -265,8 +265,8 @@
 }
 
 .light-theme .badge-primary {
-  background: rgba(59, 130, 246, 0.08);
-  color: var(--brand-600);
+  background: rgba(249, 115, 22, 0.08);
+  color: var(--orange-600);
 }
 
 .light-theme .badge-success {
